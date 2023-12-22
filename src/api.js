@@ -5,12 +5,29 @@ const db = require('./db.js')
 
 app.use(express.json())
 
+const updateCategories = (body) => {
+    let update = '';
+    let i = 2;
+    for (key in body) {
+        update += `${key} = $${i}`
+        if (i <= Object.keys(body).length){
+            update += ', ';
+        }
+        i++;
+    }
+    return update;
+};
+
 app.route('/api/users/:user_id')
     .get(async (req, res) => {
         try {
             console.log(req.query)
             const result = await db.query('SELECT * FROM users WHERE user_id = $1;', [req.params.user_id]); // Parmeterised queries prevent SQL injection
-            res.json(result.rows);
+            if (result.rows.length === 0){
+                res.status(404).send('No User Found');
+            } else {
+                res.json(result.rows);
+            }
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -18,19 +35,7 @@ app.route('/api/users/:user_id')
     })
     .put(async (req, res) => {
         try {
-            console.log(req.body);
-            let update = '';
-            let i = 2;
-            for (key in req.body) {
-                update += `${key} = $${i}`
-                if (i <= Object.keys(req.body).length){
-                    update += ', ';
-                }
-                i++;
-            }
-            let result = await db.query('SELECT * FROM users WHERE user_id = $1;', [req.params.user_id]);
-            console.log(update)
-            result = await db.query(`UPDATE users SET ${update} WHERE user_id = $1;`, [req.params.user_id, ...Object.values(req.body)]);
+            let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1;`, [req.params.user_id, ...Object.values(req.body)]);
             res.send(result.rows);
         } catch (err) {
             console.error(err);
@@ -66,17 +71,50 @@ app.route('/api/users/')
             res.status(500).send('Internal Server Error');
         }
     })
-   /*.get('/appointments/', async (req, res) => {
+
+app.route('/api/appointments/:appointment_id')
+    .get(async (req, res) => {
         try {
-            const result = await db.query('SELECT * FROM users;');
+            const result = await db.query('SELECT * FROM appointments WHERE appointment_id = $1;', [req.params.appointment_id]);
+            if (result.rows.length === 0){
+                res.status(404).send('No Appointment Found');
+            } else {
+                res.json(result.rows);
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .put(async (req, res) => {
+        try {
+            let result = await db.query(`UPDATE appointments SET ${updateCategories(req.body)} WHERE appointment_id = $1;`, [req.params.appointment_id, ...Object.values(req.body)]);
+            res.send(result.rows);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const result = await db.query('DELETE FROM appointments WHERE appointment_id = $1;', [req.params.appointment_id]);
+            res.send(result);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+app.route('/api/appointments/')
+    .post(async (req, res) => {
+        try {
+            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5)', [req.body.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
         }
-    })*/
-
-app.route('/api/appointments/:appointment_id')
+    })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
