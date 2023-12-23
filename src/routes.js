@@ -1,28 +1,21 @@
-const express = require('express');
-const app = express();
-const port = 3001;
-const db = require('./db.js')
-
-app.use(express.json())
-
-const updateCategories = (body) => {
-    let update = '';
-    let i = 2;
-    for (key in body) {
-        update += `${key} = $${i}`
-        if (i <= Object.keys(body).length){
-            update += ', ';
+module.exports = (app, db) => {
+    const updateCategories = (body) => {
+        let update = '';
+        let i = 2;
+        for (key in body) {
+            update += `${key} = $${i}`
+            if (i <= Object.keys(body).length){
+                update += ', ';
+            }
+            i++;
         }
-        i++;
-    }
-    return update;
-};
-
-app.route('/api/users/:user_id')
+        return update;
+    };
+    
+    app.route('/api/users/:user_id')
     .get(async (req, res) => {
         try {
-            console.log(req.query)
-            const result = await db.query('SELECT * FROM users WHERE user_id = $1;', [req.params.user_id]); // Parmeterised queries prevent SQL injection
+            const result = await db.query('SELECT * FROM users WHERE user_id = $1;', [req.params.user_id]); // Parameterised queries prevent SQL injection
             if (result.rows.length === 0){
                 res.status(404).send('No User Found');
             } else {
@@ -51,11 +44,10 @@ app.route('/api/users/:user_id')
             res.status(500).send('Internal Server Error');
         }
     })
-
-app.route('/api/users/')
+    
+    app.route('/api/users/')
     .post(async (req, res) => {
         try {
-            console.log(req.body);
             const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, preferred_doctors) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [
                 req.body.first_name || '',
                 req.body.family_name || '',
@@ -71,8 +63,8 @@ app.route('/api/users/')
             res.status(500).send('Internal Server Error');
         }
     })
-
-app.route('/api/appointments/:appointment_id')
+    
+    app.route('/api/appointments/:appointment_id')
     .get(async (req, res) => {
         try {
             const result = await db.query('SELECT * FROM appointments WHERE appointment_id = $1;', [req.params.appointment_id]);
@@ -104,8 +96,8 @@ app.route('/api/appointments/:appointment_id')
             res.status(500).send('Internal Server Error');
         }
     })
-
-app.route('/api/appointments/')
+    
+    app.route('/api/appointments/')
     .post(async (req, res) => {
         try {
             const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5)', [req.body.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
@@ -115,7 +107,4 @@ app.route('/api/appointments/')
             res.status(500).send('Internal Server Error');
         }
     })
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+}
