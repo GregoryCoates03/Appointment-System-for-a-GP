@@ -28,7 +28,7 @@ module.exports = (app, db) => {
     })
     .put(async (req, res) => {
         try {
-            let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1;`, [req.params.user_id, ...Object.values(req.body)]);
+            let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1 RETURNING *;`, [req.params.user_id, ...Object.values(req.body)]);
             res.send(result.rows);
         } catch (err) {
             console.error(err);
@@ -37,8 +37,8 @@ module.exports = (app, db) => {
     })
     .delete(async (req, res) => {
         try {
-            let result = await db.query('DELETE FROM users WHERE user_id = $1;', [req.params.user_id]);
-            res.send(result);
+            let result = await db.query('DELETE FROM users WHERE user_id = $1 RETURNING *;', [req.params.user_id]);
+            res.send(result.rows);
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -48,7 +48,7 @@ module.exports = (app, db) => {
     app.route('/api/users/')
     .post(async (req, res) => {
         try {
-            const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, preferred_doctors) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [
+            const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, preferred_doctors) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, [
                 req.body.first_name || '',
                 req.body.family_name || '',
                 req.body.email || '',
@@ -80,7 +80,7 @@ module.exports = (app, db) => {
     })
     .put(async (req, res) => {
         try {
-            let result = await db.query(`UPDATE appointments SET ${updateCategories(req.body)} WHERE appointment_id = $1;`, [req.params.appointment_id, ...Object.values(req.body)]);
+            let result = await db.query(`UPDATE appointments SET ${updateCategories(req.body)} WHERE appointment_id = $1 RETURNING *;`, [req.params.appointment_id, ...Object.values(req.body)]);
             res.send(result.rows);
         } catch (err) {
             console.error(err);
@@ -89,8 +89,8 @@ module.exports = (app, db) => {
     })
     .delete(async (req, res) => {
         try {
-            const result = await db.query('DELETE FROM appointments WHERE appointment_id = $1;', [req.params.appointment_id]);
-            res.send(result);
+            const result = await db.query('DELETE FROM appointments WHERE appointment_id = $1 RETURNING *;', [req.params.appointment_id]);
+            res.send(result.rows);
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -100,7 +100,7 @@ module.exports = (app, db) => {
     app.route('/api/appointments/')
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5)', [req.body.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
+            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5) RETURNING *;', [req.body.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
