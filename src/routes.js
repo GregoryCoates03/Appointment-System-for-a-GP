@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
+
 module.exports = (app, db) => {
     const updateCategories = (body) => {
         let update = '';
@@ -48,13 +51,15 @@ module.exports = (app, db) => {
     app.route('/api/users/')
     .post(async (req, res) => {
         try {
+            const hashedPassword = await bcrypt.hash(req.body.password || '', saltRounds);
+            
             const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, preferred_doctors) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, [
                 req.body.first_name || '',
                 req.body.family_name || '',
                 req.body.email || '',
                 req.body.phone_number || '',
                 req.body.address || '',
-                req.body.password || '',
+                hashedPassword || '',
                 req.body.preferred_doctors || ''
             ]);
             res.json(result.rows);

@@ -10,7 +10,7 @@ const getUser = (userID) => {
     }); //.finally(() => {});
 }
 
-const createUser = (userDetails) => {
+const createAccount = (userDetails) => {
     console.log(userDetails);
     axios.post(`http://localhost:3001/api/users/`, userDetails).then((response) => {
         console.log(response.data);
@@ -19,5 +19,5 @@ const createUser = (userDetails) => {
     });
 }
 
-export {getUser, createUser};
+export {getUser, createAccount};
 

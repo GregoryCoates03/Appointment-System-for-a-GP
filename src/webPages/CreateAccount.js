@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { createUser } from "../databaseInteraction";
+import { createAccount } from "../databaseInteraction";
 
 class CreateAccount extends React.Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class CreateAccount extends React.Component {
         }
 
         if (email_same && password_same){
-            createUser({
+            createAccount({
                 first_name,
                 family_name,
                 email,
@@ -57,23 +57,23 @@ class CreateAccount extends React.Component {
                 <h1>Create Account</h1>
                 <form className="flex flex-col" onSubmit={this.handleSubmit}>
                     <label htmlFor="first_name">First Name:</label>
-                    <input name="first_name" type="text" className="bg-gray-400" value={this.state.first_name} onChange={this.handleChange} />
+                    <input id="first_name" name="first_name" type="text" className="bg-gray-400" value={this.state.first_name} onChange={this.handleChange} />
                     <label htmlFor="family_name">Family Name:</label>
-                    <input name="family_name" type="text" className="bg-gray-400" value={this.state.family_name} onChange={this.handleChange} />
+                    <input id="family_name" name="family_name" type="text" className="bg-gray-400" value={this.state.family_name} onChange={this.handleChange} />
                     <label htmlFor="email">Email:</label>
-                    <input name="email" type="email" className="bg-gray-400" value={this.state.email} onChange={this.handleChange} />
+                    <input id="email" name="email" type="email" className="bg-gray-400" value={this.state.email} onChange={this.handleChange} />
                     <label htmlFor="confirm_email">Confirm Email:</label>
-                    <input name="confirm_email" type="email" className="bg-gray-400" value={this.state.confirm_email} onChange={this.handleChange} />
+                    <input id="confirm_email" name="confirm_email" type="email" className="bg-gray-400" value={this.state.confirm_email} onChange={this.handleChange} />
                     <label htmlFor="phone_number">Phone Number e.g. 123-456-789:</label>
-                    <input name="phone_number" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" className="bg-gray-400" value={this.state.phone_number} onChange={this.handleChange}/>
+                    <input id="phone_number" name="phone_number" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" className="bg-gray-400" value={this.state.phone_number} onChange={this.handleChange}/>
                     <label htmlFor="address">Address:</label>
-                    <input name="address" type="text" className="bg-gray-400" value={this.state.address} onChange={this.handleChange}/>
+                    <input id="address" name="address" type="text" className="bg-gray-400" value={this.state.address} onChange={this.handleChange}/>
                     <label htmlFor="password">Password:</label>
-                    <input name="password" type="password" className="bg-gray-400" value={this.state.password} onChange={this.handleChange}/>
+                    <input id="password" name="password" type="password" className="bg-gray-400" value={this.state.password} onChange={this.handleChange}/>
                     <label htmlFor="confirm_password">Confirm Password:</label>
-                    <input name="confirm_password" type="password" className="bg-gray-400" value={this.state.confirm_password} onChange={this.handleChange}/>
+                    <input id="confirm_password" name="confirm_password" type="password" className="bg-gray-400" value={this.state.confirm_password} onChange={this.handleChange}/>
                     <label htmlFor="preferred_doctors">Preferred Doctors:</label>
-                    <input name="preferred_doctors" type="text" className="bg-gray-400" onChange={this.handleChange}/>
+                    <input id="preferred_doctors" name="preferred_doctors" type="text" className="bg-gray-400" onChange={this.handleChange}/>
                     <button type="submit" className="text-lime-500">Create Account</button>
                 </form>
             </div>
