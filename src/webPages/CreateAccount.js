@@ -24,28 +24,35 @@ class CreateAccount extends React.Component {
         console.log(name, value);
     }
     
-    handleSubmit = () => {
+    handleSubmit = (event) => {
+        event.preventDefault();
         const { first_name, family_name, email, confirm_email, phone_number, address, password, confirm_password, preferred_doctors } = this.state;
         let email_same = false;
         let password_same = false;
+        const error = document.getElementById('error');
 
         if (email === confirm_email) {
             email_same = true;
+        } else {
+            error.textContent = "Emails not matching";
         }
 
         if (password === confirm_password){
             password_same = true;
+        } else {
+            error.textContent = "Passwords not matching";
         }
 
         if (email_same && password_same){
-            createAccount({
-                first_name,
-                family_name,
-                email,
-                phone_number,
-                address,
-                password,
-                preferred_doctors
+            createAccount({ first_name, family_name, email, phone_number, address, password, preferred_doctors }).then((response) => {
+                if (response === true){
+                    error.textContent = "Email already exists";
+                } else {
+                    error.textContent = "Account created";
+                    error.className = "text-green-500";
+                }
+            }).catch((error) => {
+                console.log(error);
             });
         }
     }
@@ -76,6 +83,7 @@ class CreateAccount extends React.Component {
                     <input id="preferred_doctors" name="preferred_doctors" type="text" className="bg-gray-400" onChange={this.handleChange}/>
                     <button type="submit" className="text-lime-500">Create Account</button>
                 </form>
+                <p id="error" className="text-red-500"></p>
             </div>
         )
     }

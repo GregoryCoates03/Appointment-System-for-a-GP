@@ -68,6 +68,20 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+    .get(async (req, res) => {
+        try {
+            const result = await db.query(`SELECT email FROM users WHERE email = $1;`, [req.query.email]);
+
+            if (result.rows.length > 0) {
+                res.json(`Email already exists`);
+            } else {
+                res.json(`Email doesn't exist`);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
     
     app.route('/api/appointments/:appointment_id')
     .get(async (req, res) => {
