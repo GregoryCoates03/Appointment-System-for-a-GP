@@ -159,4 +159,14 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+
+    app.route('/api/log-out/')
+    .get((req, res) => {
+        req.logout((err) => {
+            if(err) {
+                console.log(err);
+            }
+            res.json({ message: 'Logged out' });
+        })
+    })
 }

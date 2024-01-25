@@ -73,5 +73,14 @@ const getUser = () => {
     })
 }
 
-export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser };
+const logOutUser = () => {
+    return axios.get(`http://localhost:3001/api/log-out`).then((response) => {
+        window.location.href = "http://localhost:3000/";
+    }).catch((error) => {
+        console.log(error);
+    })
+    //console.log("aaaaaaaa")
+}
+
+export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser };
 

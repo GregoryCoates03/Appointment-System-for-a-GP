@@ -7,6 +7,7 @@ import Appointments from "./webPages/Appointments";
 import Information from "./webPages/Information";
 import SignIn from "./webPages/SignIn";
 import CreateAccount from "./webPages/CreateAccount";
+import LogOut from "./webPages/LogOut";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route exact path="/information/" element={<Information />} />
         <Route exact path="/sign-in/" element={<SignIn />} />
         <Route exact path="/create-account/" element={<CreateAccount />} />
+        <Route exact path="/log-out/" element={<LogOut />} />
       </Routes>
     </BrowserRouter>
   )
