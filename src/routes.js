@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const saltRounds = 12;
 
 module.exports = (app, db) => {
@@ -68,10 +69,12 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
-    .get(async (req, res) => {
-        try {
-            const result = await db.query(`SELECT email FROM users WHERE email = $1;`, [req.query.email]);
 
+    app.route('/api/exists/')
+    .post(async (req, res) => {
+        try {
+            const result = await db.query(`SELECT email, password FROM users WHERE email = $1;`, [req.body.email]);
+            
             if (result.rows.length > 0) {
                 res.json(`Email already exists`);
             } else {
@@ -83,6 +86,11 @@ module.exports = (app, db) => {
         }
     })
     
+    app.route('/api/login/')
+    .post(passport.authenticate('local'), (req, res) => {
+            res.json({ message: `Valid credentials`, user: req.user });
+        });
+
     app.route('/api/appointments/:appointment_id')
     .get(async (req, res) => {
         try {
@@ -112,6 +120,31 @@ module.exports = (app, db) => {
             res.send(result.rows);
         } catch (err) {
             console.error(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/signed-in/')
+    .get((req, res) => {
+        try {
+            console.log(req.session);
+            if (req.isAuthenticated()){
+                res.json({ isAuthenticated: true, user: req.user })
+            } else {
+                res.json({ isAuthenticated: false, user: req.user });
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/get-user/')
+    .get((req, res) => {
+        try {
+            res.json(req.user);
+        } catch (err) {
+            console.log(err);
             res.status(500).send('Internal Server Error');
         }
     })
