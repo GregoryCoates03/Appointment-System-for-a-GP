@@ -8,19 +8,22 @@ import Information from "./webPages/Information";
 import SignIn from "./webPages/SignIn";
 import CreateAccount from "./webPages/CreateAccount";
 import LogOut from "./webPages/LogOut";
+import React, { useState } from "react";
 
 const App = () => {
+  const [signedIn, setSignedIn] = useState(false);
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar signedIn={signedIn} />
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/prescriptions/" element={<Prescriptions />} />
-        <Route exact path="/appointments/" element={<Appointments />} />
-        <Route exact path="/information/" element={<Information />} />
-        <Route exact path="/sign-in/" element={<SignIn />} />
+        <Route exact path="/" element={<Home signedIn={signedIn}/>} />
+        <Route exact path="/prescriptions/" element={<Prescriptions signedIn={signedIn} />} />
+        <Route exact path="/appointments/" element={<Appointments signedIn={signedIn}/>} />
+        <Route exact path="/information/" element={<Information signedIn={signedIn} />} />
+        <Route exact path="/sign-in/" element={<SignIn setSignedIn={setSignedIn}/>} />
         <Route exact path="/create-account/" element={<CreateAccount />} />
-        <Route exact path="/log-out/" element={<LogOut />} />
+        <Route exact path="/log-out/" element={<LogOut setSignedIn={setSignedIn} />} />
       </Routes>
     </BrowserRouter>
   )

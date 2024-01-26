@@ -23,6 +23,7 @@ class SignIn extends React.Component {
 
         signInUser(email, password).then((response) => {
             console.log(response);
+            this.props.setSignedIn(true);
         }).catch((error) => {
             console.log(error);
         });
