@@ -12,7 +12,7 @@ class Navbar extends React.Component {
                 <Link to={'/prescriptions/'} className="no-underline">PRESCRIPTIONS</Link>
                 <Link to={'/appointments/'} className="no-underline">APPOINTMENTS</Link>
                 <Link to={'/information/'} className="no-underline">INFORMATION</Link>
-                <Link to={this.props.signedIn ? '/log-out/' : '/sign-in/'} className="no-underline">{this.props.signedIn ? 'LOG OUT' : 'SIGN IN'}</Link>
+                <Link to={this.props.signedIn ? '/log-out/' : '/sign-in/'} className="no-underline">{this.props.signedIn ? 'LOG OUT' : 'SIGN-IN'}</Link>
             </nav>
         )
     }

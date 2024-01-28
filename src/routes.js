@@ -91,10 +91,10 @@ module.exports = (app, db) => {
             res.json({ message: `Valid credentials`, user: req.user });
         });
 
-    app.route('/api/appointments/:appointment_id')
+    app.route('/api/appointments/:user_id')
     .get(async (req, res) => {
         try {
-            const result = await db.query('SELECT * FROM appointments WHERE appointment_id = $1;', [req.params.appointment_id]);
+            const result = await db.query('SELECT * FROM appointments WHERE user_id = $1;', [req.params.user_id]);
             if (result.rows.length === 0){
                 res.status(404).send('No Appointment Found');
             } else {
@@ -152,7 +152,7 @@ module.exports = (app, db) => {
     app.route('/api/appointments/')
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5) RETURNING *;', [req.body.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
+            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5) RETURNING *;', [req.user.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
