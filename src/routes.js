@@ -169,4 +169,44 @@ module.exports = (app, db) => {
             res.json({ message: 'Logged out' });
         })
     })
+
+    app.route('/api/locations/')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM locations;');
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .post(async (req, res) => {
+        try {
+            const result = await db.query('INSERT INTO locations (location_name) VALUES ($1) RETURNING *;', [req.body.location_name]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/doctors/')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM doctors;');
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .post(async (req, res) => {
+        try {
+            const result = await db.query('INSERT INTO doctors (first_name, last_name, location_id) VALUES ($1, $2, $3) RETURNING *;', [req.body.first_name, req.body.last_name, req.body.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
 }

@@ -37,7 +37,6 @@ const signInUser = (email, password) => {
         if(response.status === 200){
             if (isAuthenticated()){
                 console.log(response.data.user);
-                //window.location.href = "http://localhost:3000/";
                 return true;
             } else {
                 return false;
@@ -82,5 +81,14 @@ const logOutUser = () => {
     //console.log("aaaaaaaa")
 }
 
-export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser };
+const getLocations = () => {
+    return axios.get(`http://localhost:3001/api/locations`).then((response) => {
+        console.log(response.data);
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
+export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations };
 
