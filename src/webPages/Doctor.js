@@ -23,7 +23,9 @@ const Doctor = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1>Doctor</h1>
+            {/* UPDATE THIS SO IT SAYS THE LOCATION NAME NOT THE LOCATION ID*/}
+            <h1 className="text-red-500">{location} - UPDATE THIS SO IT SAYS THE LOCATION NAME NOT THE LOCATION ID</h1>
+            <h1>Select Doctor:</h1>
             {doctors.map((doctor) => (
                 <Link to={`/appointments/${location}/${doctor.doctor_id}`} key={doctor.doctor_id}>
                     {doctor.first_name + ' ' + doctor.last_name}

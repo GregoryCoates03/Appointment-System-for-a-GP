@@ -10,9 +10,6 @@ const Appointments = (props) => {
 
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(user.preferred_doctors);
-
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 13);
     
     const getLocations = async () => {
         try {
@@ -26,14 +23,6 @@ const Appointments = (props) => {
     useEffect(() => {
         getLocations();
     }, []);
-
-    const [date] = useState(new Date());
-    const [maxDate] = useState(endDate);
-    const [selectedDate, setSelectedDate] = useState(new Date());
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    }
 
     const handleLocationChange = (event) => {
         setSelectedLocation(event.target.value);
@@ -54,9 +43,6 @@ const Appointments = (props) => {
                             </option>
                         ))}
                     </select>
-                    {/*<Calendar onChange={handleDateChange} value={selectedDate} minDate={date} maxDate={maxDate}/>*/}
-                    {/*<h1>Selected Date: {selectedDate.toLocaleDateString()}</h1>*/}
-                    {/*<Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white">SELECT TIME</Link>*/}
                     <Link to={`/appointments/${selectedLocation}`} className="bg-sky-600 text-white">Select Doctor </Link>
                 </>
                 : <Link to='/sign-in/' className="bg-sky-600 text-white">Sign In</Link>
