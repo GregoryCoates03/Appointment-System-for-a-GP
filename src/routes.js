@@ -209,4 +209,15 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+
+    app.route('/api/locations/:location_id')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM doctors WHERE location_id = $1', [req.params.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
 }

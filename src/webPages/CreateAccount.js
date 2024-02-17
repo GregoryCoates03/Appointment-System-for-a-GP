@@ -13,10 +13,11 @@ const CreateAccount = (props) => {
         address: "",
         password: "",
         confirm_password: "",
+        preferred_doctors: ""
     });
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState(null);
 
     const getLocations = async () => {
         try {
@@ -38,7 +39,9 @@ const CreateAccount = (props) => {
     }
 
     const handleLocationChange = (event) => {
+        console.log(event.target.value);
         setSelectedLocation(event.target.value);
+        setState((state) => ({...state, preferred_doctors: event.target.value}));
     }
     
     const handleSubmit = (event) => {
@@ -98,7 +101,7 @@ const CreateAccount = (props) => {
                 <label htmlFor="preferred_doctors">Preferred Doctors:</label>
                 <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
                 {locations.map((location) => (
-                    <option key={location.location_id} value={location.location_name}>
+                    <option key={location.location_id} value={location.location_id}>
                         {location.location_name}
                     </option>
                 ))}

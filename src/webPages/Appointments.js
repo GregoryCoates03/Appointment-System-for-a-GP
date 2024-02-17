@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Appointments = (props) => {
-    const { user } = props;
+    const { user, signedIn } = props;
     console.log(user);
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState(user.preferred_doctors);
 
     const endDate = new Date();
     endDate.setDate(endDate.getDate() + 13);
@@ -41,18 +41,26 @@ const Appointments = (props) => {
 
     return (
         <div className="flex flex-col items-center">
-            <button className="bg-sky-600 text-white">UPCOMING AND PAST</button>
-            <h1 className="bg-sky-600 text-white">{user.preferred_doctors}</h1>
-            <Calendar onChange={handleDateChange} value={selectedDate} minDate={date} maxDate={maxDate}/>
-            <h1>Selected Date: {selectedDate.toLocaleDateString()}</h1>
-            <Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white">SELECT TIME</Link>
-            <select value={selectedLocation} onChnage={handleLocationChange}>
-                {locations.map((location) => (
-                    <option key={location.id} value={location.location_name}>
-                        {location.location_name}
-                    </option>
-                ))}
-            </select>
+            { signedIn ? 
+                <>
+                    <button className="bg-sky-600 text-white">UPCOMING AND PAST</button>
+                    <h1>Preferred Location: {user.preferred_doctors}</h1>
+                    <h1>Selected Location: {selectedLocation}</h1>
+                    <h1>Select Different Location:</h1>
+                    <select value={selectedLocation} onChange={handleLocationChange} >
+                        {locations.map((location) => (
+                            <option key={location.location_id} value={location.location_id}>
+                                {location.location_name}
+                            </option>
+                        ))}
+                    </select>
+                    {/*<Calendar onChange={handleDateChange} value={selectedDate} minDate={date} maxDate={maxDate}/>*/}
+                    {/*<h1>Selected Date: {selectedDate.toLocaleDateString()}</h1>*/}
+                    {/*<Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white">SELECT TIME</Link>*/}
+                    <Link to={`/appointments/${selectedLocation}`} className="bg-sky-600 text-white">Select Doctor </Link>
+                </>
+                : <Link to='/sign-in/' className="bg-sky-600 text-white">Sign In</Link>
+            }
         </div>
     )
 }
