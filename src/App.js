@@ -28,7 +28,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Navbar admin={admin} signedIn={signedIn} user={user} />
+      <Navbar admin={admin} setSignedIn={setSignedIn} setAdmin={setAdmin} signedIn={signedIn} user={user} />
       <Routes>
         <Route exact path="/" element={<Home admin={admin} signedIn={signedIn}/>} />
         <Route exact path="/prescriptions/" element={<Prescriptions admin={admin} signedIn={signedIn} />} />

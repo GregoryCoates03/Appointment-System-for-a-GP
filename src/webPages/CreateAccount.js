@@ -13,7 +13,7 @@ const CreateAccount = (props) => {
         address: "",
         password: "",
         confirm_password: "",
-        preferred_doctors: ""
+        preferred_doctors: null
     });
 
     const [locations, setLocations] = useState([]);
@@ -100,12 +100,12 @@ const CreateAccount = (props) => {
                 <input id="confirm_password" name="confirm_password" type="password" className="bg-gray-400" value={state.confirm_password} onChange={handleChange}/>
                 <label htmlFor="preferred_doctors">Preferred Doctors:</label>
                 <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
-                {locations.map((location) => (
-                    <option key={location.location_id} value={location.location_id}>
-                        {location.location_name}
-                    </option>
-                ))}
-            </select>
+                    {locations.map((location) => (
+                        <option key={location.location_id} value={location.location_id}>
+                            {location.location_name}
+                        </option>
+                    ))}
+                </select>
                 <button type="submit" className="text-lime-500">Create Account</button>
             </form>
             <p id="error" className="text-red-500"></p>
