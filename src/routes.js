@@ -152,7 +152,7 @@ module.exports = (app, db) => {
     app.route('/api/appointments/')
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date) VALUES ($1,$2,$3,$4,$5) RETURNING *;', [req.user.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date]);
+            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, practitioner, time, date, location_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;', [req.user.user_id, req.body.appointment_type, req.body.practitioner, req.body.time, req.body.date, req.body.location_id]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
@@ -202,7 +202,7 @@ module.exports = (app, db) => {
     })
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO doctors (first_name, last_name, location_id) VALUES ($1, $2, $3) RETURNING *;', [req.body.first_name, req.body.last_name, req.body.location_id]);
+            const result = await db.query('INSERT INTO doctors (first_name, last_name, location_id, start_time, end_time) VALUES ($1, $2, $3, $4, $5) RETURNING *;', [req.body.first_name, req.body.last_name, req.body.location_id, req.body.start_time, req.body.end_time]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);
@@ -214,6 +214,17 @@ module.exports = (app, db) => {
     .get(async (req, res) => {
         try {
             const result = await db.query('SELECT * FROM doctors WHERE location_id = $1', [req.params.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/doctors/:doctor_id')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM doctors WHERE doctor_id = $1;', [req.params.doctor_id]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);

@@ -32,7 +32,7 @@ const Appointments = (props) => {
         <div className="flex flex-col items-center">
             { signedIn ? 
                 <>
-                    <button className="bg-sky-600 text-white">UPCOMING AND PAST</button>
+                    <Link to={'/appointments/upcoming-and-past/'} className="bg-sky-600 text-white">UPCOMING AND PAST</Link>
                     <h1>Preferred Location: {user.preferred_doctors}</h1>
                     <h1>Selected Location: {selectedLocation}</h1>
                     <h1>Select Different Location:</h1>
