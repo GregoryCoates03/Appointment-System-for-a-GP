@@ -258,7 +258,7 @@ module.exports = (app, db) => {
     .post(async (req, res) => {
         const mailOptions = {
             from: process.env.EMAIL_EMAIL,
-            to: req.body.to,
+            to: req.user.email,
             subject: 'Appointment Confirmation',
             text: req.body.text
         }
