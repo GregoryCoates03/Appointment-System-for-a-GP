@@ -13,6 +13,12 @@ const Confirm = () => {
                 time: time,
                 location_id: location
             })
+            const button = document.getElementById('button');
+            if (response.data) {
+                button.className = "text-red-500";
+                button.disabled = true;
+                button.textContent = "Appointment Booked"
+            }
             console.log(response.data); 
         } catch (error) {
             console.log(error);
@@ -25,7 +31,7 @@ const Confirm = () => {
             <h1>{doctor}</h1>
             <h1>{date}</h1>
             <h1>{time}</h1>
-            <button className="text-lime-500" onClick={handleClick}>Confirm Appointment</button>
+            <button id="button" className="text-lime-500" onClick={handleClick}>Confirm Appointment</button>
         </div>
     )
 }

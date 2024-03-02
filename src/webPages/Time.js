@@ -70,12 +70,12 @@ const Time = () => {
 
         while (time < end){
             //console.log(time);
-            console.log(`${time.getUTCHours()}:${time.getUTCMinutes() < 10 ? "00" : time.getUTCMinutes()}:00`);
+            console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
             /*console.log("aaaaaaaaa" + typeof time)
             console.log(time2.getUTCHours())
             console.log(time2.getUTCMinutes())
             console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
-            if (!booked.includes(`${time.getUTCHours()}:${time.getUTCMinutes() < 10 ? "00" : time.getUTCMinutes()}:00`)){
+            if (!booked.includes(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`)){
                 times.push(new Date(time));
             }
             time.setMinutes(time.getMinutes() + 20);
