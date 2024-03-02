@@ -5,7 +5,10 @@ const CreateDoctor = () => {
     const [state, setState] = useState({
         first_name: "",
         last_name: "",
-        location_id: null
+        location_id: null,
+        start_time: "",
+        end_time: "",
+        break_time: ""
     });
 
     const [locations, setLocations] = useState([]);
@@ -38,9 +41,9 @@ const CreateDoctor = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const { first_name, last_name, location_id } = state;
+        const { first_name, last_name, location_id, start_time, end_time, break_time } = state;
 
-        axios.post(`http://localhost:3001/api/doctors`, {first_name, last_name, location_id}).then((response) => {
+        axios.post(`http://localhost:3001/api/doctors`, {first_name, last_name, location_id, start_time, end_time, break_time}).then((response) => {
             console.log(response.data);
         }).catch((error) => {
             console.log(error);
@@ -63,6 +66,12 @@ const CreateDoctor = () => {
                         </option>
                     ))}
                 </select>
+                <label htmlFor="start_time">Start Time (HH:MM:SS):</label>
+                <input id="start_time" name="start_time" type="text" className="bg-gray-400" value={state.start_time} onChange={handleChange} />
+                <label htmlFor="end_time">End Time (HH:MM:SS):</label>
+                <input id="end_time" name="end_time" type="text" className="bg-gray-400" value={state.end_time} onChange={handleChange} />
+                <label htmlFor="break_time">Break Time (HH:MM:SS):</label>
+                <input id="break_time" name="break_time" type="text" className="bg-gray-400" value={state.break_time} onChange={handleChange} />
                 <button type="submit" className="text-lime-500">Create Doctor</button>
             </form>
         </div>

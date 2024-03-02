@@ -10,6 +10,8 @@ const Time = () => {
 
     const [times, setTimes] = useState([]);
 
+    const [booked, setBooked] = useState([]);
+
     const getDoctorDetails = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/api/doctors/${doctor}`);
@@ -22,16 +24,20 @@ const Time = () => {
     useEffect(() => {
         getDoctorDetails();
     }, [doctor]);
-
+    
     useEffect(() => {
-        createDate();
+        getBooked();
     }, [doctorDetails]);
     
+    useEffect(() => {
+        createDate();
+    }, [booked]);
+
     const createDate = () => {
         const dateParts = date.split("/");
         if (doctorDetails) {
-            console.log(doctorDetails[0]);
-            console.log(doctorDetails[0].start_time);
+            //console.log(doctorDetails[0]);
+            //console.log(doctorDetails[0].start_time);
     
             const startParts = doctorDetails[0].start_time.split(":");
             const endParts = doctorDetails[0].end_time.split(":");
@@ -43,26 +49,40 @@ const Time = () => {
         }
     }
 
-    /*const getBooked = async () => {
+    const getBooked = async () => {
         try {
-
+            const [day, month, year] = date.split("/");
+            const ISODate = new Date(`${year}-${month}-${day}`).toISOString();
+            const response = await axios.get(`http://localhost:3001/api/booked-appointments/${location}/${doctor}/${ISODate}`);
+            
+            const bookedTimes = response.data.map(appointment => appointment.time);
+            
+            setBooked(bookedTimes);
         } catch (error) {
             console.log(error);
         }
-    }*/
+    }
 
     const createTimes = (start, end) => {
         const times = [];
-
+        console.log(booked);
         let time = start;
 
         while (time < end){
-            times.push(new Date(time));
+            //console.log(time);
+            console.log(`${time.getUTCHours()}:${time.getUTCMinutes() < 10 ? "00" : time.getUTCMinutes()}:00`);
+            /*console.log("aaaaaaaaa" + typeof time)
+            console.log(time2.getUTCHours())
+            console.log(time2.getUTCMinutes())
+            console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
+            if (!booked.includes(`${time.getUTCHours()}:${time.getUTCMinutes() < 10 ? "00" : time.getUTCMinutes()}:00`)){
+                times.push(new Date(time));
+            }
             time.setMinutes(time.getMinutes() + 20);
         }
 
         setTimes(times);
-        console.log(times);
+        //console.log(times);
     }
 
     return (

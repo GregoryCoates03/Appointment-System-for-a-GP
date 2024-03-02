@@ -8,7 +8,7 @@ const Confirm = () => {
         try {
             const response = await axios.post('http://localhost:3001/api/appointments/', {
                 appointment_type: "Test",
-                practitioner: doctor,
+                doctor_id: doctor,
                 date: date,
                 time: time,
                 location_id: location

@@ -36,7 +36,7 @@ const App = () => {
         <Route exact path="/prescriptions/" element={<Prescriptions admin={admin} signedIn={signedIn} />} />
         <Route exact path="/appointments/" element={<Appointments admin={admin} signedIn={signedIn} user={user} />} />
         <Route exact path="/appointments/upcoming-and-past/" element={<UpcomingAndPast admin={admin} signedIn={signedIn} />} />
-        <Route exact path="/appointments/:location/" element={<Doctor admin={admin} signedIn={signedIn}/>} />
+        <Route exact path="/appointments/:location/" element={<Doctor admin={admin} signedIn={signedIn} />} />
         <Route exact path="/appointments/:location/:doctor/" element={<Dates admin={admin} signedIn={signedIn}/>} />
         <Route exact path="/appointments/:location/:doctor/:date" element={<Time admin={admin} signedIn={signedIn}/>} />
         <Route exact path="/appointments/:location/:doctor/:date/:time" element={<Confirm admin={admin} signedIn={signedIn}/>} />
