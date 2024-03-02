@@ -24,7 +24,7 @@ const Dates = () => {
             <h1>{selectedDoctorName}</h1>
             <Calendar onChange={handleDateChange} value={selectedDate} minDate={date} maxDate={maxDate}/>
             <h1>Selected Date: {selectedDate.toLocaleDateString()}</h1>
-            <Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white">SELECT TIME</Link>
+            <Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white" state={{ selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>SELECT TIME</Link>
         </div>
     )
 }

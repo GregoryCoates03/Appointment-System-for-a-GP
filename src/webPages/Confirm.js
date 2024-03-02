@@ -1,8 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Confirm = () => {
     const { location, doctor, date, time } = useParams();
+    const loc = useLocation();
+    console.log(loc)
+    const { selectedLocationName, selectedDoctorName } = loc.state;
 
     const handleClick = async () => {
         try {
@@ -27,8 +30,8 @@ const Confirm = () => {
 
     return (
         <div className="flex items-center flex-col">
-            <h1>{location}</h1>
-            <h1>{doctor}</h1>
+            <h1>{selectedLocationName}</h1>
+            <h1>{selectedDoctorName}</h1>
             <h1>{date}</h1>
             <h1>{time}</h1>
             <button id="button" className="text-lime-500" onClick={handleClick}>Confirm Appointment</button>

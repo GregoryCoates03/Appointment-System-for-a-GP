@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const Time = () => {
     const { location, doctor, date } = useParams();
@@ -11,6 +10,9 @@ const Time = () => {
     const [times, setTimes] = useState([]);
 
     const [booked, setBooked] = useState([]);
+
+    const loc = useLocation();
+    const { selectedLocationName, selectedDoctorName } = loc.state;
 
     const getDoctorDetails = async () => {
         try {
@@ -87,10 +89,11 @@ const Time = () => {
 
     return (
         <div className="flex flex-col items-center">
-            <h1>{doctor}</h1>
+            <h1>{selectedLocationName}</h1>
+            <h1>{selectedDoctorName}</h1>
             <h1>{date}</h1>
             {times.map((time) => (
-                <Link to={`/appointments/${location}/${doctor}/${encodeURIComponent(date)}/${time.toLocaleTimeString()}`}>{time.toLocaleTimeString().split(':').slice(0,2).join(':')}</Link>
+                <Link to={`/appointments/${location}/${doctor}/${encodeURIComponent(date)}/${time.toLocaleTimeString()}`} state={{selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>{time.toLocaleTimeString().split(':').slice(0,2).join(':')}</Link>
             ))}
         </div>
     )

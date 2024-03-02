@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const sendEmail = require('./email');
+require('dotenv').config({ path: 'secret.env'});
 const saltRounds = 12;
 
 module.exports = (app, db) => {
@@ -250,5 +252,18 @@ module.exports = (app, db) => {
             console.log(err);
             res.status(500).send('Internal Server Error');
         }
+    })
+
+    app.route('/api/confirmation/')
+    .post(async (req, res) => {
+        const mailOptions = {
+            from: process.env.EMAIL_EMAIL,
+            to: req.body.to,
+            subject: 'Appointment Confirmation',
+            text: req.body.text
+        }
+
+        sendEmail(mailOptions);
+        res.json('Email Sent');
     })
 }
