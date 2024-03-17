@@ -13,7 +13,7 @@ const Navbar = (props) => {
     }
 
     return (
-        <nav className="flex justify-center bg-sky-600 space-x-10 text-white">
+        <nav className="flex justify-center bg-sky-600 space-x-10 text-white font-serif">
             <Link to={admin ? '/admin/' : '/'} className="no-underline">{admin ? 'ADMIN' : 'PATIENT'}</Link>
             <Link to={'/prescriptions/'} className="no-underline">PRESCRIPTIONS</Link>
             <Link to={user ? '/appointments/' : `/appointments/${user.preferred_doctors}/`} className="no-underline">APPOINTMENTS</Link>

@@ -154,7 +154,7 @@ module.exports = (app, db) => {
     app.route('/api/appointments/')
     .get(async (req, res) => {
         try {
-            const result = await db.query('SELECT appointments.*, locations.location_name FROM appointments NATURAL JOIN locations WHERE user_id = $1;', [req.user.user_id]);
+            const result = await db.query('SELECT appointments.*, locations.location_name, doctors.first_name, doctors.last_name FROM appointments NATURAL JOIN locations NATURAL JOIN doctors WHERE user_id = $1;', [req.user.user_id]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
@@ -236,6 +236,15 @@ module.exports = (app, db) => {
     .get(async (req, res) => {
         try {
             const result = await db.query('SELECT * FROM doctors WHERE doctor_id = $1;', [req.params.doctor_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .put(async (req, res) => {
+        try {
+            const result = await db.query(`UPDATE doctors SET ${updateCategories(req.body)} WHERE doctor_id=$1;`, [req.params.doctor_id, ...Object.values(req.body)]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);

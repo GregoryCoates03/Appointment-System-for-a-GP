@@ -28,28 +28,30 @@ const App = () => {
     preferred_doctors: ""
   });
 
+  document.body.className = "bg-sky-200 font-mono";
+
   return (
     <BrowserRouter>
-      <Navbar admin={admin} setSignedIn={setSignedIn} setAdmin={setAdmin} signedIn={signedIn} user={user} />
-      <Routes>
-        <Route exact path="/" element={<Home admin={admin} signedIn={signedIn}/>} />
-        <Route exact path="/prescriptions/" element={<Prescriptions admin={admin} signedIn={signedIn} />} />
-        <Route exact path="/appointments/" element={<Appointments admin={admin} signedIn={signedIn} user={user} />} />
-        <Route exact path="/appointments/upcoming-and-past/" element={<UpcomingAndPast admin={admin} signedIn={signedIn} />} />
-        <Route exact path="/appointments/:location/" element={<Doctor admin={admin} signedIn={signedIn} />} />
-        <Route exact path="/appointments/:location/:doctor/" element={<Dates admin={admin} signedIn={signedIn}/>} />
-        <Route exact path="/appointments/:location/:doctor/:date" element={<Time admin={admin} signedIn={signedIn}/>} />
-        <Route exact path="/appointments/:location/:doctor/:date/:time" element={<Confirm admin={admin} signedIn={signedIn}/>} />
-        <Route exact path="/information/" element={<Information signedIn={signedIn} />} />
-        <Route exact path="/sign-in/" element={<SignIn setAdmin={setAdmin} setSignedIn={setSignedIn} setUser={setUser} />} />
-        <Route exact path="/create-account/" element={<CreateAccount />} />
-        <Route exact path="/admin/" element={<Admin />} />
-        <Route exact path="/admin/create-doctor/" element={<CreateDoctor />} />
-        <Route exact path="/admin/update-doctor/" element={<UpdateDoctor />} />
-        <Route exact path="/admin/doctor-appointments" element={<DoctorAppointments />} />
-        <Route exact path="/admin/create-location/" element={<CreateLocation />} />
-        <Route exact path="/admin/update-location/" element={<UpdateLocation />} />
-      </Routes>
+          <Navbar admin={admin} setSignedIn={setSignedIn} setAdmin={setAdmin} signedIn={signedIn} user={user} />
+          <Routes>
+            <Route exact path="/" element={<Home admin={admin} signedIn={signedIn}/>} />
+            <Route exact path="/prescriptions/" element={<Prescriptions admin={admin} signedIn={signedIn} />} />
+            <Route exact path="/appointments/" element={<Appointments admin={admin} signedIn={signedIn} user={user} />} />
+            <Route exact path="/appointments/upcoming-and-past/" element={<UpcomingAndPast admin={admin} signedIn={signedIn} />} />
+            <Route exact path="/appointments/:location/" element={<Doctor admin={admin} signedIn={signedIn} />} />
+            <Route exact path="/appointments/:location/:doctor/" element={<Dates admin={admin} signedIn={signedIn}/>} />
+            <Route exact path="/appointments/:location/:doctor/:date" element={<Time admin={admin} signedIn={signedIn}/>} />
+            <Route exact path="/appointments/:location/:doctor/:date/:time" element={<Confirm admin={admin} signedIn={signedIn}/>} />
+            <Route exact path="/information/" element={<Information signedIn={signedIn} />} />
+            <Route exact path="/sign-in/" element={<SignIn setAdmin={setAdmin} setSignedIn={setSignedIn} setUser={setUser} />} />
+            <Route exact path="/create-account/" element={<CreateAccount />} />
+            <Route exact path="/admin/" element={<Admin />} />
+            <Route exact path="/admin/create-doctor/" element={<CreateDoctor />} />
+            <Route exact path="/admin/update-doctor/" element={<UpdateDoctor />} />
+            <Route exact path="/admin/doctor-appointments" element={<DoctorAppointments />} />
+            <Route exact path="/admin/create-location/" element={<CreateLocation />} />
+            <Route exact path="/admin/update-location/" element={<UpdateLocation />} />
+          </Routes>
     </BrowserRouter>
   )
 }

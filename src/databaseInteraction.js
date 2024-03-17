@@ -90,5 +90,16 @@ const getLocations = () => {
     })
 }
 
-export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations };
+const updateDoctor = (details) => {
+    return axios.put(`http://localhost:3001/api/doctors/${details.doctor_id}`, details).then((response) => { 
+        console.log(response);
+        if (response.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+}
+
+export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations, updateDoctor };
 
