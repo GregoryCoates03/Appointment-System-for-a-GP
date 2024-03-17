@@ -35,7 +35,7 @@ const UpcomingAndPast = () => {
                         
                         return date > current_time;
                     }).map((appointment) => (
-                        <div className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
+                        <div className="border-2 border-solid border-black my-1 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
                             <h1>{"Date: " + new Date(appointment.date).toLocaleDateString()}</h1>
                             <h1>{"Time: " + appointment.time.split(":").slice(0, 2).join(":")}</h1>
                             <h1>{"Location: " + appointment.location_name}</h1>
@@ -61,7 +61,7 @@ const UpcomingAndPast = () => {
                         
                         return date <= current_time;
                     }).map((appointment) => (
-                        <div className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
+                        <div className="border-2 border-solid border-black my-1 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
                             <h1>{"Date: " + new Date(appointment.date).toLocaleDateString()}</h1>
                             <h1>{"Time: " + appointment.time.split(":").slice(0, 2).join(":")}</h1>
                             <h1>{"Location: " + appointment.location_name}</h1>

@@ -19,12 +19,12 @@ const Dates = () => {
     }
 
     return (
-        <div className="flex flex-col items-center">
-            <h1>{selectedLocationName}</h1>
-            <h1>{selectedDoctorName}</h1>
+        <div className="flex flex-col items-center my-1">
+            <h1 className="underline">{"Location: " + selectedLocationName}</h1>
+            <h1 className="underline">{"Doctor: " + selectedDoctorName}</h1>
             <Calendar onChange={handleDateChange} value={selectedDate} minDate={date} maxDate={maxDate}/>
             <h1>Selected Date: {selectedDate.toLocaleDateString()}</h1>
-            <Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white" state={{ selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>SELECT TIME</Link>
+            <Link to={`${encodeURIComponent(selectedDate.toLocaleDateString())}`} className="bg-sky-600 text-white my-1 border-2 border-black" state={{ selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>SELECT TIME</Link>
         </div>
     )
 }

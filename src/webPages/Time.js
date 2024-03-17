@@ -88,12 +88,12 @@ const Time = () => {
     }
 
     return (
-        <div className="flex flex-col items-center">
-            <h1>{selectedLocationName}</h1>
-            <h1>{selectedDoctorName}</h1>
-            <h1>{date}</h1>
+        <div className="flex flex-col items-center my-1">
+            <h1 className="underline">{"Location: " + selectedLocationName}</h1>
+            <h1 className="underline">{"Doctor: " + selectedDoctorName}</h1>
+            <h1 className="underline">{"Date: " + date}</h1>
             {times.map((time) => (
-                <Link to={`/appointments/${location}/${doctor}/${encodeURIComponent(date)}/${time.toLocaleTimeString()}`} state={{selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>{time.toLocaleTimeString().split(':').slice(0,2).join(':')}</Link>
+                <Link className="bg-sky-600 text-white my-1 border-2 border-black" to={`/appointments/${location}/${doctor}/${encodeURIComponent(date)}/${time.toLocaleTimeString()}`} state={{selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>{time.toLocaleTimeString().split(':').slice(0,2).join(':')}</Link>
             ))}
         </div>
     )

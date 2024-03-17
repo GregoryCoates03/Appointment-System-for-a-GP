@@ -2,6 +2,7 @@ import Home from "./webPages/Home";
 import Navbar from "./Navbar";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import './Calendar.css';
 import Prescriptions from "./webPages/Prescriptions";
 import Appointments from "./webPages/Appointments";
 import UpcomingAndPast from "./webPages/UpcomingAndPast";

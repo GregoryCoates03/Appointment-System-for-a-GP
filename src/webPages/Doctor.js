@@ -25,14 +25,15 @@ const Doctor = (props) => {
 
     return (
         <div className="flex flex-col items-center">
-            {/* UPDATE THIS SO IT SAYS THE LOCATION NAME NOT THE LOCATION ID*/}
-            <h1 className="text-red-500">{selectedLocationName} - UPDATE THIS SO IT SAYS THE LOCATION NAME NOT THE LOCATION ID</h1>
+            <h1 className="my-1 underline">{"Location: " + selectedLocationName}</h1>
             <h1>Select Doctor:</h1>
-            {doctors.map((doctor) => (
-                <Link to={`/appointments/${location}/${doctor.doctor_id}`} key={doctor.doctor_id} state={{ selectedLocationName: selectedLocationName, selectedDoctorName: `${doctor.first_name} ${doctor.last_name}` }}>
-                    {doctor.first_name + ' ' + doctor.last_name}
-                </Link>
-            ))}
+            <div className="grid grid-cols-1 text-center">
+                {doctors.map((doctor) => (
+                    <Link className="border-2 border-solid border-black my-1 bg-sky-600 text-white p-5"to={`/appointments/${location}/${doctor.doctor_id}`} key={doctor.doctor_id} state={{ selectedLocationName: selectedLocationName, selectedDoctorName: `${doctor.first_name} ${doctor.last_name}` }}>
+                        {doctor.first_name + ' ' + doctor.last_name}
+                    </Link>
+                ))}
+            </div>
         </div>
     )
 }

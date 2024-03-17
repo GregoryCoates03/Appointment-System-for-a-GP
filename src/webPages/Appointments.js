@@ -37,14 +37,14 @@ const Appointments = (props) => {
     }
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center my-1">
             { signedIn ? 
                 <>
-                    <Link to={'/appointments/upcoming-and-past/'} className="bg-sky-600 text-white">UPCOMING AND PAST</Link>
+                    <Link to={'/appointments/upcoming-and-past/'} className="bg-sky-600 text-white border-solid border-2 border-black">UPCOMING AND PAST</Link>
                     <h1>Preferred Location: {preferredLocationName}</h1>
                     <h1>Selected Location: {selectedLocationName}</h1>
                     <h1>Select Different Location:</h1>
-                    <select value={selectedLocation} onChange={handleLocationChange} >
+                    <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange} >
                         {locations.map((location) => (
                             <option key={location.location_id} value={location.location_id}>
                                 {location.location_name}
@@ -52,7 +52,7 @@ const Appointments = (props) => {
                         ))}
                     </select>
                     {/*https://ui.dev/react-router-pass-props-to-link*/}
-                    <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white" >Select Doctor </Link>
+                    <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white my-1 border-2 border-black">Select Doctor </Link>
                 </>
                 : <Link to='/sign-in/' className="bg-sky-600 text-white">Sign In</Link>
             }
