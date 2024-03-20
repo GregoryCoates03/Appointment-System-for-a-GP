@@ -98,8 +98,30 @@ const updateDoctor = (details) => {
         } else {
             return false;
         }
-    })
+    });
 }
 
-export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations, updateDoctor };
+const updateAccount = (details) => {
+    var emailExists = false;
+    return axios.post(`http://localhost:3001/api/exists/`, { email: details.email }).then((response) => {
+        console.log(response.data);
+        if(response.data === "Email already exists"){
+            emailExists = true;
+            return emailExists;
+        }    
+        console.log(details)
+        if (!emailExists){
+            axios.put(`http://localhost:3001/api/users/${details.user_id}`, details).then((response) => {
+                console.log(response.data);
+                return emailExists;
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations, updateDoctor, updateAccount };
 

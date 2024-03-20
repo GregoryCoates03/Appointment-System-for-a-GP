@@ -79,8 +79,8 @@ const CreateAccount = (props) => {
 
     return (
         <div className="flex items-center flex-col border-2"> 
-            <Link to={'/sign-in/'}>Sign-In</Link>
-            <h1>Create Account</h1>
+            <Link to={'/sign-in/'} className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5">Sign-In</Link>
+            <h1 className="underline">Create Account</h1>
             <form className="flex flex-col" onSubmit={handleSubmit}>
                 <label htmlFor="first_name">First Name:</label>
                 <input id="first_name" name="first_name" type="text" className="bg-gray-400" value={state.first_name} onChange={handleChange} />

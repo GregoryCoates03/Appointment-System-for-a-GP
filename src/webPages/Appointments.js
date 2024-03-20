@@ -6,7 +6,7 @@ import axios from "axios";
 
 const Appointments = (props) => {
     const { user, signedIn } = props;
-    console.log(user);
+    //console.log(user);
 
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(user.preferred_doctors);
@@ -36,28 +36,32 @@ const Appointments = (props) => {
         setSelectedLocationName(location.location_name);
     }
 
-    return (
-        <div className="flex flex-col items-center my-1">
-            { signedIn ? 
-                <>
-                    <Link to={'/appointments/upcoming-and-past/'} className="bg-sky-600 text-white border-solid border-2 border-black">UPCOMING AND PAST</Link>
-                    <h1>Preferred Location: {preferredLocationName}</h1>
-                    <h1>Selected Location: {selectedLocationName}</h1>
-                    <h1>Select Different Location:</h1>
-                    <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange} >
-                        {locations.map((location) => (
-                            <option key={location.location_id} value={location.location_id}>
-                                {location.location_name}
-                            </option>
-                        ))}
-                    </select>
-                    {/*https://ui.dev/react-router-pass-props-to-link*/}
-                    <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white my-1 border-2 border-black">Select Doctor </Link>
-                </>
-                : <Link to='/sign-in/' className="bg-sky-600 text-white">Sign In</Link>
-            }
-        </div>
-    )
+    if (signedIn) {
+        return (
+            <div className="flex flex-col items-center my-1">
+                <Link to={'/appointments/upcoming-and-past/'} className="bg-sky-600 text-white border-solid border-2 border-black">UPCOMING AND PAST</Link>
+                <h1>Preferred Location: {preferredLocationName}</h1>
+                <h1>Selected Location: {selectedLocationName}</h1>
+                <h1>Select Different Location:</h1>
+                <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange} >
+                    {locations.map((location) => (
+                        <option key={location.location_id} value={location.location_id}>
+                            {location.location_name}
+                        </option>
+                    ))}
+                </select>
+                {/*https://ui.dev/react-router-pass-props-to-link*/}
+                <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white my-1 border-2 border-black">Select Doctor </Link>
+            </div>
+        )
+    } else {
+        return (
+            <div className="flex flex-col items-center">
+                <Link to='/sign-in/' className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5">Sign In</Link>
+            </div>
+        )
+    }
+
 }
 
 export default Appointments;

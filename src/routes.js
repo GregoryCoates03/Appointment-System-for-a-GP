@@ -34,6 +34,8 @@ module.exports = (app, db) => {
     })
     .put(async (req, res) => {
         try {
+            req.body.password = await bcrypt.hash(req.body.password || '', saltRounds);
+            
             let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1 RETURNING *;`, [req.params.user_id, ...Object.values(req.body)]);
             res.send(result.rows);
         } catch (err) {
