@@ -233,6 +233,15 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+    .put(async (req, res) => {
+        try {
+            let result = await db.query(`UPDATE locations SET location_name = $1 WHERE location_id = $2 RETURNING *;`, [req.body.location_name, req.params.location_id]);
+            res.send(result.rows);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        }
+    });
 
     app.route('/api/doctors/:doctor_id')
     .get(async (req, res) => {

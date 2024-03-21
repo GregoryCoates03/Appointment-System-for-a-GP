@@ -56,7 +56,7 @@ const CreateDoctor = (props) => {
     if (admin) {
         return (
             <div className="flex flex-col items-center">
-                <h1>Create Doctor</h1>
+                <h1 className="underline">Create Doctor</h1>
                 <form className="flex flex-col" onSubmit={handleSubmit}>
                     <label htmlFor="first_name">First Name:</label>
                     <input id="first_name" name="first_name" type="text" className="bg-gray-400" value={state.first_name} onChange={handleChange} />

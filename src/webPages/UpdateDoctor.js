@@ -101,7 +101,7 @@ const UpdateDoctor = (props) => {
     if (admin) {
         return (
             <div className="flex flex-col items-center border-2">
-                <h1>Update Doctor</h1>
+                <h1 className="underline">Update Doctor</h1>
                 <h1>Location:</h1>
                 <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
                     <option>SELECT A LOCATION</option>

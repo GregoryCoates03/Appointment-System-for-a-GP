@@ -45,7 +45,7 @@ const SignIn = (props) => {
     return (
         <div className="flex items-center flex-col border-2"> 
             <Link to={'/create-account/'} className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5">Create Account</Link>
-            <h1 className="underline">Sign-In</h1>
+            <h1 className="underline text">Sign-In</h1>
             <form className="flex flex-col" onSubmit={handleSubmit}>
                 <label htmlFor="email">Email:</label>
                 <input id="email" name="email" type="email" className="bg-gray-400" onChange={handleChange}/>

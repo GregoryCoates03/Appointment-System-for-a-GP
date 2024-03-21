@@ -28,7 +28,7 @@ const CreateLocation = (props) => {
     if (admin) {
         return (
             <div className="flex flex-col items-center">
-                <h1>Create Location</h1>
+                <h1 className="underline">Create Location</h1>
                 <form className="flex flex-col" onSubmit={handleSubmit}>
                     <label htmlFor="location_name">Location Name:</label>
                     <input id="location_name" name="location_name" type="text" className="bg-gray-400" value={state.location_name} onChange={handleChange} />

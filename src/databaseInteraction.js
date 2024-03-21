@@ -123,5 +123,16 @@ const updateAccount = (details) => {
     });
 }
 
-export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations, updateDoctor, updateAccount };
+const updateLocation = (details) => {
+    console.log(details)
+    return axios.put(`http://localhost:3001/api/locations/${details.selectedLocation}`, {location_name: details.locationName}).then((response) => {
+        console.log(response.data);
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+        return false;
+    });
+}
+
+export {/*getUser,*/ createAccount, signInUser, isAuthenticated, getUser, logOutUser, getLocations, updateDoctor, updateAccount, updateLocation };
 
