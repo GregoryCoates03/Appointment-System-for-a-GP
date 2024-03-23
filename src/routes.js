@@ -46,7 +46,7 @@ module.exports = (app, db) => {
     .delete(async (req, res) => {
         try {
             let result = await db.query('DELETE FROM users WHERE user_id = $1 RETURNING *;', [req.params.user_id]);
-            res.send(result.rows);
+            res.json('DELETED USER');
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');

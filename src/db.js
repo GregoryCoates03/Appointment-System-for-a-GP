@@ -1,7 +1,7 @@
 //https://medium.com/@eslmzadpc13/how-to-connect-a-postgres-database-to-express-a-step-by-step-guide-b2fffeb8aeac
 
 const { Pool } = require('pg');
-require('dotenv').config({ path: 'secret.env'});
+require('dotenv').config({ path: '../secret.env'});
 
 const pool = new Pool({
     user: process.env.DB_USER,
