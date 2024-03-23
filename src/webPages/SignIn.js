@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInUser, getUser } from "../databaseInteraction";
 
 const SignIn = (props) => {
-    const { setSignedIn, setAdmin, setUser } = props;
+    const { setSignedIn, setAdmin, setUser, setDoctor } = props;
     const navigate = useNavigate();
 
     const [state, setState] = useState({
@@ -33,7 +33,12 @@ const SignIn = (props) => {
                 if(response.user.admin === true){
                     setAdmin(true);
                     navigate("/admin");
-                } else {
+                } 
+                else if (response.user.doctor_id !== null){
+                    setDoctor(response.user.doctor_id);
+                    navigate("/doctor");
+                }
+                else {
                     navigate("/");
                 }
             })

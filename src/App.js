@@ -20,6 +20,7 @@ import UpdateLocation from "./webPages/UpdateLocation";
 import UpdateDoctor from "./webPages/UpdateDoctor";
 import CreateLocation from "./webPages/CreateLocation";
 import DoctorAppointments from "./webPages/DoctorAppointments";
+import DoctorHome from "./webPages/DoctorHome";
 
 const App = () => {
   const [signedIn, setSignedIn] = useState(false);
@@ -28,6 +29,7 @@ const App = () => {
     first_name: "",
     preferred_doctors: ""
   });
+  const [doctor, setDoctor] = useState(false);
 
   document.body.className = "bg-sky-200 font-mono";
 
@@ -35,7 +37,7 @@ const App = () => {
   
   return (
     <BrowserRouter>
-          <Navbar admin={admin} setSignedIn={setSignedIn} setAdmin={setAdmin} signedIn={signedIn} user={user} />
+          <Navbar admin={admin} setSignedIn={setSignedIn} setAdmin={setAdmin} signedIn={signedIn} user={user} doctor={doctor} setDoctor={setDoctor} />
           <Routes>
             <Route exact path="/" element={<Home admin={admin} signedIn={signedIn}/>} />
             <Route exact path="/appointments/" element={<Appointments admin={admin} signedIn={signedIn} user={user} />} />
@@ -45,7 +47,7 @@ const App = () => {
             <Route exact path="/appointments/:location/:doctor/:date" element={<Time admin={admin} signedIn={signedIn}/>} />
             <Route exact path="/appointments/:location/:doctor/:date/:time" element={<Confirm admin={admin} signedIn={signedIn}/>} />
             <Route exact path="/information/" element={<Information signedIn={signedIn} />} />
-            <Route exact path="/sign-in/" element={<SignIn setAdmin={setAdmin} setSignedIn={setSignedIn} setUser={setUser} />} />
+            <Route exact path="/sign-in/" element={<SignIn setAdmin={setAdmin} setSignedIn={setSignedIn} setUser={setUser} setDoctor={setDoctor} />} />
             <Route exact path="/create-account/" element={<CreateAccount />} />
             <Route exact path="/admin/" element={<Admin admin={admin} user={user} />} />
             <Route exact path="/admin/create-doctor/" element={<CreateDoctor admin={admin} />} />
@@ -53,6 +55,7 @@ const App = () => {
             <Route exact path="/admin/doctor-appointments" element={<DoctorAppointments admin={admin} />} />
             <Route exact path="/admin/create-location/" element={<CreateLocation admin={admin} />} />
             <Route exact path="/admin/update-location/" element={<UpdateLocation admin={admin} />} />
+            <Route exact path="/doctor/" element={<DoctorHome doctor={doctor} user={user} />} />
           </Routes>
     </BrowserRouter>
   )

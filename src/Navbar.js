@@ -4,18 +4,19 @@ import { logOutUser } from './databaseInteraction';
 
 
 const Navbar = (props) => {
-    const { signedIn, admin, setSignedIn, setAdmin, user } = props;
+    const { signedIn, admin, setSignedIn, setAdmin, user, doctor, setDoctor } = props;
 
     const handleClick = () => {
         logOutUser();
         setSignedIn(false);
         setAdmin(false);
+        setDoctor(false);
     }
     
     //<Link to={'/prescriptions/'} className="no-underline">PRESCRIPTIONS</Link>
     return (
         <nav className="flex justify-center bg-sky-600 space-x-10 text-white font-serif">
-            <Link to={admin ? '/admin/' : '/'} className="no-underline">{admin ? 'ADMIN' : 'PATIENT'}</Link>
+            <Link to={admin ? '/admin/' : doctor ? '/doctor/' : '/'} className="no-underline">{admin ? 'ADMIN' : doctor ? 'DOCTOR' : 'PATIENT'}</Link>
             <Link to={user ? '/appointments/' : `/appointments/${user.preferred_doctors}/`} className="no-underline">APPOINTMENTS</Link>
             <Link to={'/information/'} className="no-underline">INFORMATION</Link>
             {signedIn ? <button onClick={handleClick}>LOG OUT</button> : <Link to='/sign-in/' className="no-underline">SIGN IN</Link>}
