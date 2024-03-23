@@ -124,7 +124,7 @@ printData = (req, res, next) => {
 //app.use(printData) //user printData function as middleware to print populated variables
 routes(app, db);
 
-task.start();
+//task.start();
 
 
 

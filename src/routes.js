@@ -45,8 +45,10 @@ module.exports = (app, db) => {
     })
     .delete(async (req, res) => {
         try {
-            let result = await db.query('DELETE FROM users WHERE user_id = $1 RETURNING *;', [req.params.user_id]);
-            res.json('DELETED USER');
+            const result = await db.query('DELETE FROM users WHERE user_id = $1 RETURNING *;', [req.params.user_id]);
+            res.send({
+                message: "Deleted User"
+            });
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -95,7 +97,8 @@ module.exports = (app, db) => {
             res.json({ message: `Valid credentials`, user: req.user });
         });
 
-    app.route('/api/appointments/:user_id')
+    app.route('/api/appointments/:appointment_id')
+    /*
     .get(async (req, res) => {
         try {
             const result = await db.query('SELECT * FROM appointments WHERE user_id = $1;', [req.params.user_id]);
@@ -108,7 +111,7 @@ module.exports = (app, db) => {
             console.error(err);
             res.status(500).send('Internal Server Error');
         }
-    })
+    })*/
     .put(async (req, res) => {
         try {
             let result = await db.query(`UPDATE appointments SET ${updateCategories(req.body)} WHERE appointment_id = $1 RETURNING *;`, [req.params.appointment_id, ...Object.values(req.body)]);
@@ -121,7 +124,9 @@ module.exports = (app, db) => {
     .delete(async (req, res) => {
         try {
             const result = await db.query('DELETE FROM appointments WHERE appointment_id = $1 RETURNING *;', [req.params.appointment_id]);
-            res.send(result.rows);
+            res.json({
+                message: "Deleted Appointment"
+            });
         } catch (err) {
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -165,7 +170,7 @@ module.exports = (app, db) => {
     })
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO appointments (user_id, appointment_type, doctor_id, time, date, location_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;', [req.user.user_id, req.body.appointment_type, req.body.doctor_id, req.body.time, req.body.date, req.body.location_id]);
+            const result = await db.query('INSERT INTO appointments (user_id, doctor_id, time, date, location_id) VALUES ($1,$2,$3,$4,$5) RETURNING *;', [req.user.user_id, req.body.doctor_id, req.body.time, req.body.date, req.body.location_id]);
             res.json(result.rows);
         } catch (err) {
             console.error(err);
@@ -241,7 +246,18 @@ module.exports = (app, db) => {
             console.error(err);
             res.status(500).send('Internal Server Error');
         }
-    });
+    })
+    .delete(async (req, res) => {
+        try {
+            const result = await db.query('DELETE FROM locations WHERE location_id = $1 RETURNING *;', [req.params.location_id]);
+            res.json({
+                message: "Deleted Location"
+            })
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
 
     app.route('/api/doctors/:doctor_id')
     .get(async (req, res) => {
@@ -255,8 +271,19 @@ module.exports = (app, db) => {
     })
     .put(async (req, res) => {
         try {
-            const result = await db.query(`UPDATE doctors SET ${updateCategories(req.body)} WHERE doctor_id=$1;`, [req.params.doctor_id, ...Object.values(req.body)]);
+            const result = await db.query(`UPDATE doctors SET ${updateCategories(req.body)} WHERE doctor_id=$1 RETURNING *;`, [req.params.doctor_id, ...Object.values(req.body)]);
             res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+    .delete(async (req, res) => {
+        try {
+            const result = await db.query('DELETE FROM doctors WHERE doctor_id = $1 RETURNING *;', [req.params.doctor_id]);
+            res.json({
+                message: "Deleted Doctor"
+            })
         } catch (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');

@@ -16,20 +16,6 @@ CREATE TABLE IF NOT EXISTS users (
     admin BOOLEAN DEFAULT false
 );
 
-CREATE TABLE IF NOT EXISTS appointments (
-    appointment_id SERIAL PRIMARY KEY,
-    user_id INT,
-    location_id INT,
-    doctor_id INT,
-    appointment_type VARCHAR(50),
-    practitioner VARCHAR(50),
-    time TIME,
-    date DATE,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-    CONSTRAINT fk_location_id FOREIGN KEY (location_id) REFERENCES locations(location_id),
-    CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
-);
-
 CREATE TABLE IF NOT EXISTS doctors (
     doctor_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50),
@@ -39,4 +25,16 @@ CREATE TABLE IF NOT EXISTS doctors (
     end_time TIME,
     break_time TIME,
     CONSTRAINT fk_location_id FOREIGN KEY (location_id) REFERENCES locations(location_id)
+);
+
+CREATE TABLE IF NOT EXISTS appointments (
+    appointment_id SERIAL PRIMARY KEY,
+    user_id INT,
+    location_id INT,
+    doctor_id INT,
+    time TIME,
+    date DATE,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id),
+    CONSTRAINT fk_location_id FOREIGN KEY (location_id) REFERENCES locations(location_id),
+    CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
 );

@@ -24,7 +24,7 @@ suite('Functional Tests', () => {
             location = response.body[0].location_id;
         });
         
-        test('Get Locations / Test New Location Added', async () => {
+        test('Get Locations', async () => {
             const response = await chai
                 .request(server)
                 .keepOpen()
@@ -49,6 +49,7 @@ suite('Functional Tests', () => {
     })
     
     let user;
+    const agent = chai.request.agent(server);
     suite('User Tests', () => {
         test('Create New User', async () => {
             const { body } = await chai
@@ -112,6 +113,7 @@ suite('Functional Tests', () => {
                     preferred_doctors: "Updated"
                 });
 
+            console.log(body);
             const { first_name, family_name, email, phone_number, address, password, preferred_doctors } = body[0];
             assert.equal(first_name, "Updated");
             assert.equal(family_name, "Updated"),
@@ -121,7 +123,6 @@ suite('Functional Tests', () => {
             assert.equal(preferred_doctors, "Updated");
         });
 
-        const agent = chai.request.agent(server)
         test('Login User', async () => {
 
             const { body } = await agent
@@ -138,16 +139,16 @@ suite('Functional Tests', () => {
         test('Check User Signed In', async () => {
             const { body } = await agent
                 .get('/api/signed-in/');
-            
-            console.log(body);
-        });
 
-    })
+            assert.equal(body.isAuthenticated, true);
+            assert.exists(body.user);
+        });
+    });
     
     let doctor;
     suite('Doctor Tests', () => {
         test('Create Doctor', async () => {
-            const response = await chai
+            const { body } = await chai
                 .request(server)
                 .keepOpen()
                 .post('/api/doctors')
@@ -159,36 +160,122 @@ suite('Functional Tests', () => {
                     break_time: "13:00:00",
                     end_time: "17:00:00"
                 });
+
+            const { doctor_id, first_name, last_name, location_id, start_time, break_time, end_time } = body[0];
+            doctor = doctor_id;
+            assert.equal(first_name, "Test");
+            assert.equal(last_name, "Test");
+            assert.equal(location_id, location);
+            assert.equal(start_time, "10:00:00");
+            assert.equal(break_time, "13:00:00");
+            assert.equal(end_time, "17:00:00");
+        });
+
+        test('Get Doctor', async () => {
+            const { body } = await chai
+                .request(server)
+                .keepOpen()
+                .get('/api/doctors/' + doctor)
+            
+            const { doctor_id, first_name, last_name, location_id, start_time, break_time, end_time } = body[0];
+            assert.equal(first_name, "Test");
+            assert.equal(last_name, "Test");
+            assert.equal(location_id, location);
+            assert.equal(start_time, "10:00:00");
+            assert.equal(break_time, "13:00:00");
+            assert.equal(end_time, "17:00:00");
+        });
+
+        test('Get Doctors Who Work For Location', async () => {
+            const { body } = await chai
+                .request(server)
+                .keepOpen()
+                .get('/api/locations/' + location);
+
+            assert.equal(body.length, 1);
+        });
+
+        test('Update Doctor', async () => {
+            const { body } = await chai
+                .request(server)
+                .keepOpen()
+                .put('/api/doctors/' + doctor)
+                .send({
+                    first_name: "Updated",
+                    last_name: "Updated",
+                    start_time: "11:00:00",
+                    break_time: "14:00:00",
+                    end_time: "18:00:00"
+                })
+            
+            const { first_name, last_name, start_time, break_time, end_time } = body[0];
+
+            assert.equal(first_name, "Updated");
+            assert.equal(last_name, "Updated");
+            assert.equal(start_time, "11:00:00");
+            assert.equal(break_time, "14:00:00");
+            assert.equal(end_time, "18:00:00");
+        });
+    });
+    
+    let appointment;
+    suite('Appointment Tests', () => {
+        test('Book Appointment', async () => {
+            const { body } = await agent
+                .post('/api/appointments/')
+                .send({
+                    location_id: location,
+                    doctor_id: doctor,
+                    time: "10:00:00",
+                    date: "2024/03/23"
+                });
+
+            const { appointment_id, location_id, doctor_id, time, date } = body[0];
+            appointment = appointment_id;
+            assert.equal(location_id, location);
+            assert.equal(doctor_id, doctor);
+            assert.equal(time, "10:00:00");
+            assert.equal(date, "2024-03-23T00:00:00.000Z");
+            console.log(body);
         });
     })
 
     suite('Delete Tests', () => {
+        test('Delete Appointment', async () => {
+            const response = await chai
+                .request(server)
+                .keepOpen()
+                .delete('/api/appointments/' + appointment);
+
+            //console.log(response.body);
+            assert.equal(response.body.message, "Deleted Appointment");
+        });
+
         test('Delete User', async () => {
             const response = await chai
                 .request(server)
                 .keepOpen()
                 .delete('/api/users/' + user);
     
-            assert.equal(response.body, "DELETED USER");
+            assert.equal(response.body.message, "Deleted User");
+        });
+
+        test('Delete Doctor', async () => {
+            const response = await chai
+                .request(server)
+                .keepOpen()
+                .delete('/api/doctors/' + doctor);
+            
+            assert.equal(response.body.message, "Deleted Doctor");
+        });
+
+        test('Delete Location', async () => {
+            const response = await chai
+                .request(server)
+                .keepOpen()
+                .delete('/api/locations/' + location);
+
+            assert.equal(response.body.message, "Deleted Location");
         });
     });
-    /*test('Create New User', async () => {
-        //const hashedPassword = await bcrypt.hash("E", 12);
-        const response = await chai
-            .request(server)
-            .post('/api/users/')
-            .send({
-                first_name: "A",
-                family_name: "B",
-                email: "Test@Test",
-                phone_number: 1,
-                address: "D",
-                password: "E",
-                preferred_doctors: "Test"
-            });
-        
-        console.log("aaaaaa" + response.body)
-
-        assert.equal(response.body.first_name, "A");
-    })*/
-})
+});
