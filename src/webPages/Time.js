@@ -80,7 +80,7 @@ const Time = () => {
             console.log(time2.getUTCHours())
             console.log(time2.getUTCMinutes())
             console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
-            if (!booked.includes(`${String(time.getUTCHours() + 1).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours() + 1}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`)){
+            if (!booked.includes(`${String(time.getHours()).length === 1 ? "0" + time.getHours() : time.getHours()}:${String(time.getMinutes()).length === 1 ? "0" + time.getMinutes() : time.getMinutes()}:00`)){
                 times.push(new Date(time));
             }
             time.setMinutes(time.getMinutes() + 20);
