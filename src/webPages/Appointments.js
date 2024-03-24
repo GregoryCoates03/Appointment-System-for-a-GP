@@ -11,7 +11,7 @@ const Appointments = (props) => {
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(user.preferred_doctors);
     const [selectedLocationName, setSelectedLocationName] = useState("");
-    let preferredLocationName = "";
+    const [preferredLocationName, setPreferredLocationName] = useState("");
     
     const getLocations = async () => {
         try {
@@ -19,7 +19,9 @@ const Appointments = (props) => {
             setLocations(response.data);
             console.log(locations);
             const location = response.data.find((location) => location.location_id == user.preferred_doctors);
-            preferredLocationName = location.location_name;
+            //preferredLocationName = location.location_name;
+            setPreferredLocationName(location.location_name);
+            setSelectedLocationName(location.location_name);
         } catch (error) {
             console.log(error);
         }
