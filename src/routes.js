@@ -335,4 +335,15 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     });
+
+    app.route('/api/join-waiting-list')
+    .post(async (req, res) => {
+        try {
+            const result = await db.query('INSERT INTO waiting_list (user_id, location_id, doctor_id, date) VALUES ($1, $2, $3, $4) RETURNING *;', [req.user.user_id, req.body.location_id, req.body.doctor_id, req.body.date]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    });
 }

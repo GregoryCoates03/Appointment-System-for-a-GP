@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Time = () => {
@@ -13,6 +13,8 @@ const Time = () => {
 
     const loc = useLocation();
     const { selectedLocationName, selectedDoctorName } = loc.state;
+
+    const navigate = useNavigate();
 
     const getDoctorDetails = async () => {
         try {
@@ -73,11 +75,12 @@ const Time = () => {
         while (time < end){
             //console.log(time);
             console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
+            console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
             /*console.log("aaaaaaaaa" + typeof time)
             console.log(time2.getUTCHours())
             console.log(time2.getUTCMinutes())
             console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
-            if (!booked.includes(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`)){
+            if (!booked.includes(`${String(time.getUTCHours() + 1).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours() + 1}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`)){
                 times.push(new Date(time));
             }
             time.setMinutes(time.getMinutes() + 20);
@@ -92,9 +95,16 @@ const Time = () => {
             <h1 className="underline">{"Location: " + selectedLocationName}</h1>
             <h1 className="underline">{"Doctor: " + selectedDoctorName}</h1>
             <h1 className="underline">{"Date: " + date}</h1>
-            {times.map((time) => (
+            {times.length > 0 ? times.map((time) => (
                 <Link className="bg-sky-600 text-white my-1 border-2 border-black" to={`/appointments/${location}/${doctor}/${encodeURIComponent(date)}/${time.toLocaleTimeString()}`} state={{selectedLocationName: selectedLocationName, selectedDoctorName: selectedDoctorName }}>{time.toLocaleTimeString().split(':').slice(0,2).join(':')}</Link>
-            ))}
+            )) : (
+                    <div className="flex flex-col items-center my-1">
+                        <h1 className="text-red-500">{`Sorry, there are no appointments with ${selectedDoctorName} available on ${date}`}</h1>
+                        <button className="bg-sky-600 text-white my-1 border-2 border-black">Join Waiting List</button>
+                        <h1>Or</h1>
+                        <button className="bg-sky-600 text-white my-1 border-2 border-black" onClick={() => navigate(-1)}>Book a Different Day</button>
+                    </div>
+                )}
         </div>
     )
 }

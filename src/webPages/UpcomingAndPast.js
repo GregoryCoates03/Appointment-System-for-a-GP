@@ -18,6 +18,15 @@ const UpcomingAndPast = () => {
         getAppointments();
     }, []);
 
+    const handleClick = async (appointment_id) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/api/appointments/${appointment_id}`);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="flex items-center flex-col border-2">
             <div className="text-center grid grid-cols-2 gap-4">
@@ -48,6 +57,7 @@ const UpcomingAndPast = () => {
                             <h1>{"Time: " + appointment.time.split(":").slice(0, 2).join(":")}</h1>
                             <h1>{"Location: " + appointment.location_name}</h1>
                             <h1>{"Doctor: " + appointment.first_name + " " + appointment.last_name}</h1>
+                            <button className="border-2 border-solid border-black my-1 bg-red-500 text-white p-5 text-left" onClick={() => handleClick(appointment.appointment_id)}>Cancel Appointment</button>
                         </div>
                     ))
                 }
