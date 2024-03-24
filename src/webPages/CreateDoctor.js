@@ -7,14 +7,15 @@ const CreateDoctor = (props) => {
     const [state, setState] = useState({
         first_name: "",
         last_name: "",
-        location_id: null,
+        email: "",
+        location_id: 1,
         start_time: "",
         end_time: "",
         break_time: ""
     });
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedLocation, setSelectedLocation] = useState(0);
 
 
     const getLocations = async () => {
@@ -44,10 +45,13 @@ const CreateDoctor = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const { first_name, last_name, location_id, start_time, end_time, break_time } = state;
+        const { first_name, last_name, email, location_id, start_time, end_time, break_time } = state;
 
         axios.post(`http://localhost:3001/api/doctors`, {first_name, last_name, location_id, start_time, end_time, break_time}).then((response) => {
             console.log(response.data);
+            axios.put(`http://localhost:3001/api/upgrade`, { doctor_id: response.data[0].doctor_id, email }).catch((error) => {
+                console.log(error);
+            })
         }).catch((error) => {
             console.log(error);
         });
@@ -57,11 +61,14 @@ const CreateDoctor = (props) => {
         return (
             <div className="flex flex-col items-center">
                 <h1 className="underline">Create Doctor</h1>
+                <h2 className="text-red-500">Doctor should have a user account before being upgraded to a doctor account</h2>
                 <form className="flex flex-col" onSubmit={handleSubmit}>
                     <label htmlFor="first_name">First Name:</label>
                     <input id="first_name" name="first_name" type="text" className="bg-gray-400" value={state.first_name} onChange={handleChange} />
                     <label htmlFor="last_name">Last Name:</label>
                     <input id="last_name" name="last_name" type="text" className="bg-gray-400" value={state.last_name} onChange={handleChange}/>
+                    <label htmlFor="email" className="text-red-500">User Account Email:</label>
+                    <input id="email" name="email" type="text" className="bg-gray-400" value={state.email} onChange={handleChange} />
                     <label id="location">Location:</label>
                     <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
                         {locations.map((location) => (

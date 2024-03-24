@@ -313,4 +313,15 @@ module.exports = (app, db) => {
         sendEmail(mailOptions);
         res.json('Email Sent');
     })
+
+    app.route('/api/upgrade')
+    .put(async (req, res) => {
+        try {
+            const result = await db.query('UPDATE users SET doctor_id=$1 WHERE email=$2 RETURNING *;', [req.body.doctor_id, req.body.email]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
 }
