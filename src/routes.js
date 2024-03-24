@@ -346,4 +346,24 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     });
+
+    app.route('/api/waiting-list')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM waiting_list WHERE user_id=$1;', [req.user.user_id]);
+            res.json(result.rows);
+        } catch (err) {
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/increment')
+    .put(async (req, res) => {
+        try {
+            const result = await db.query('UPDATE users SET waiting_list_position=waiting_list_position+1 WHERE user_id=$1 RETURNING *;', [req.user.user_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+        }
+    });
 }

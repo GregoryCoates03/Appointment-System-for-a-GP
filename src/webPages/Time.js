@@ -11,6 +11,8 @@ const Time = () => {
 
     const [booked, setBooked] = useState([]);
 
+    const [waitingList, setWaitingList] = useState(false);
+
     const loc = useLocation();
     const { selectedLocationName, selectedDoctorName } = loc.state;
 
@@ -20,6 +22,18 @@ const Time = () => {
         try {
             const response = await axios.get(`http://localhost:3001/api/doctors/${doctor}`);
             setDoctorDetails(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const checkWaitingList = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/api/waiting-list`);
+            //console.log(response.data);
+            if (response.data.length > 0){
+                setWaitingList(true);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -35,6 +49,7 @@ const Time = () => {
     
     useEffect(() => {
         createDate();
+        checkWaitingList();
     }, [booked]);
 
     const createDate = () => {
@@ -90,6 +105,21 @@ const Time = () => {
         //console.log(times);
     }
 
+    const handleClick = async () => {
+        try {
+            const response = await axios.post(`http://localhost:3001/api/join-waiting-list/`, { location_id: location, doctor_id: doctor, date });
+            const response2 = await axios.put('http://localhost:3001/api/increment');
+            const button = document.getElementById("waiting_list")
+            button.textContent = "Joined Waiting List"
+            button.className = "bg-green-500 text-black my-1 border-2 border-black"
+            button.disabled = true;
+            
+            console.log(response.data); 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="flex flex-col items-center my-1">
             <h1 className="underline">{"Location: " + selectedLocationName}</h1>
@@ -100,8 +130,7 @@ const Time = () => {
             )) : (
                     <div className="flex flex-col items-center my-1">
                         <h1 className="text-red-500">{`Sorry, there are no appointments with ${selectedDoctorName} available on ${date}`}</h1>
-                        <button className="bg-sky-600 text-white my-1 border-2 border-black">Join Waiting List</button>
-                        <h1>Or</h1>
+                        <button id="waiting_list" className="bg-sky-600 text-white my-1 border-2 border-black" onClick={waitingList ? '' : handleClick} disabled={waitingList ? true : false}>{waitingList ? 'Already On Waiting List' : 'Join Waiting List'}</button>
                         <button className="bg-sky-600 text-white my-1 border-2 border-black" onClick={() => navigate(-1)}>Book a Different Day</button>
                     </div>
                 )}
