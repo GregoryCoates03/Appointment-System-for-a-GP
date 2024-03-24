@@ -18,11 +18,11 @@ const Information = (props) => {
         new_address: "",
         password: "",
         confirm_password: "",
-        preferred_doctors: null
+        preferred_doctors: 1
     });
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedLocation, setSelectedLocation] = useState(0);
 
     const getUser = async () => {
         try {

@@ -324,4 +324,15 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+
+    app.route('/api/get-appointments/:doctor_id')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT users.first_name, users.family_name, appointments.time, appointments.date FROM appointments JOIN users ON appointments.user_id=users.user_id WHERE appointments.doctor_id=$1;', [req.params.doctor_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    });
 }

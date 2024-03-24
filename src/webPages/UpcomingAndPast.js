@@ -34,6 +34,14 @@ const UpcomingAndPast = () => {
                         const current_time = new Date();
                         
                         return date > current_time;
+                    }).sort((a, b) => {
+                        const dates = new Date(a.date) - new Date(b.date);
+                        
+                        if (dates === 0) {
+                            return new Date(a.time) - new Date(b.time);
+                        } else {
+                            return dates;
+                        }
                     }).map((appointment) => (
                         <div className="border-2 border-solid border-black my-1 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
                             <h1>{"Date: " + new Date(appointment.date).toLocaleDateString()}</h1>
@@ -48,18 +56,23 @@ const UpcomingAndPast = () => {
                 <h1 className="underline">Past Appointments</h1>
                 {
                     appointments.filter((appointment) => {
-                        //console.log(appointment.date);
-                        //console.log(appointment.time);
                         const date = new Date(appointment.date);
                         const split_time = appointment.time.split(":");
                         date.setHours(split_time[0]);
                         date.setMinutes(split_time[1]);
                         date.setSeconds(split_time[2]);
-                        //console.log(date);
                         
                         const current_time = new Date();
                         
                         return date <= current_time;
+                    }).sort((a, b) => {
+                        const dates = new Date(a.date) - new Date(b.date);
+                        
+                        if (dates === 0) {
+                            return new Date(a.time) - new Date(b.time);
+                        } else {
+                            return dates;
+                        }
                     }).map((appointment) => (
                         <div className="border-2 border-solid border-black my-1 bg-sky-600 text-white p-5 text-left" key={appointment.appointment_id}>
                             <h1>{"Date: " + new Date(appointment.date).toLocaleDateString()}</h1>
