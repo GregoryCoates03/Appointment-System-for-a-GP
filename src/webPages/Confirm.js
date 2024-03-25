@@ -1,11 +1,39 @@
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Confirm = () => {
     const { location, doctor, date, time } = useParams();
     const loc = useLocation();
+    const navigate = useNavigate();
     console.log(loc)
-    const { selectedLocationName, selectedDoctorName } = loc.state;
+    //const { selectedLocationName, selectedDoctorName } = loc.state || {};
+    const [selectedLocationName, setSelectedLocationName] = useState("");
+    const [selectedDoctorName, setSelectedDoctorName] = useState("");
+
+    useEffect(() => {
+        const checkSignedIn = async () => {
+            const response = await axios.get(`http://localhost:3001/api/signed-in`);
+            if (!response.data.isAuthenticated){
+                console.log(loc.pathname);
+                navigate('/sign-in/', { state: { prev: loc.pathname }});
+            }
+        }
+        checkSignedIn();
+
+        if (!loc.state || !selectedLocationName || !selectedDoctorName){
+            const fetchNames = async () => {
+                const locationData = await axios.get(`http://localhost:3001/api/location/${location}`);
+                const doctorData = await axios.get(`http://localhost:3001/api/doctors/${doctor}`);  
+                setSelectedLocationName(locationData.data[0].location_name);
+                setSelectedDoctorName(doctorData.data[0].first_name + " " + doctorData.data[0].last_name);
+            }
+            fetchNames();
+        } else {
+            setSelectedLocationName(loc.state.selectedLocationName);
+            setSelectedDoctorName(loc.state.selectedDoctorName);
+        }
+    }, [selectedLocationName, selectedDoctorName])
 
     const handleClick = async () => {
         try {
@@ -23,7 +51,7 @@ const Confirm = () => {
                 button.textContent = "Appointment Booked"
                 axios.post('http://localhost:3001/api/confirmation/', {
                     text: `Appointment with ${selectedDoctorName} in ${selectedLocationName} at ${time} is booked.`
-                })
+                });
             }
             console.log(response.data); 
         } catch (error) {

@@ -60,14 +60,14 @@ module.exports = (app, db) => {
         try {
             const hashedPassword = await bcrypt.hash(req.body.password || '', saltRounds);
             
-            const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, preferred_doctors) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, [
+            const result = await db.query(`INSERT INTO users (first_name, family_name, email, phone_number, address, password, location_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;`, [
                 req.body.first_name || '',
                 req.body.family_name || '',
                 req.body.email || '',
                 req.body.phone_number || '',
                 req.body.address || '',
                 hashedPassword || '',
-                req.body.preferred_doctors || ''
+                req.body.location_id || ''
             ]);
             res.json(result.rows);
         } catch (err) {
@@ -228,6 +228,17 @@ module.exports = (app, db) => {
         }
     })
 
+    app.route('/api/location/:location_id')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT * FROM locations WHERE location_id = $1;', [req.params.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
     app.route('/api/locations/:location_id')
     .get(async (req, res) => {
         try {
@@ -314,6 +325,24 @@ module.exports = (app, db) => {
         res.json('Email Sent');
     })
 
+    app.route('/api/available-appointment')
+    .post(async (req, res) => {
+        const mailOptions = {
+            from: process.env.EMAIL_EMAIL,
+            to: req.body.email,
+            subject: 'Available Appointment',
+            html: ` <div>
+                        <p>A patient has cancelled an appointment so it is now available for you. Click the link below if you would like to book it.<p>
+                        <a href=\"http://localhost:3000/appointments/${req.body.location_id}/${req.body.doctor_id}/${encodeURIComponent(new Date(req.body.date).toLocaleDateString())}/${req.body.time}?state={}\">Book Here</a>
+                    </div>
+                `
+        }
+
+        sendEmail(mailOptions);
+
+        res.json("aaaaaaaaaaaa")
+    })
+
     app.route('/api/upgrade')
     .put(async (req, res) => {
         try {
@@ -355,12 +384,22 @@ module.exports = (app, db) => {
         } catch (err) {
             res.status(500).send('Internal Server Error');
         }
+    });
+
+    app.route('/api/check-waiting-list')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT w.waiting_list_id, w.user_id, u.waiting_list_points FROM waiting_list AS w JOIN users AS u ON w.user_id=u.user_id WHERE w.date=$1 AND w.doctor_id=$2 AND w.location_id=$3;', [req.query.date, req.query.doctor_id, req.query.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            res.status(500).send('Internal Server Error');
+        }
     })
 
     app.route('/api/increment')
     .put(async (req, res) => {
         try {
-            const result = await db.query('UPDATE users SET waiting_list_position=waiting_list_position+1 WHERE user_id=$1 RETURNING *;', [req.user.user_id]);
+            const result = await db.query('UPDATE users SET waiting_list_points=waiting_list_points+1 WHERE user_id=$1 RETURNING *;', [req.user.user_id]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);

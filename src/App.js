@@ -27,7 +27,7 @@ const App = () => {
   const [admin, setAdmin] = useState(false);
   const [user, setUser] = useState({
     first_name: "",
-    preferred_doctors: ""
+    location_id: null
   });
   const [doctor, setDoctor] = useState(false);
 

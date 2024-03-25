@@ -1,10 +1,12 @@
 import React, { useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signInUser, getUser } from "../databaseInteraction";
 
 const SignIn = (props) => {
     const { setSignedIn, setAdmin, setUser, setDoctor } = props;
     const navigate = useNavigate();
+    const loc = useLocation();
+    //console.log(loc.state.prev)
 
     const [state, setState] = useState({
         email: "",
@@ -28,18 +30,22 @@ const SignIn = (props) => {
                 //console.log(response.user.admin);
                 setUser({
                     first_name: response.user.first_name,
-                    preferred_doctors: response.user.preferred_doctors
+                    location_id: response.user.location_id
                 })
-                if(response.user.admin === true){
-                    setAdmin(true);
-                    navigate("/admin");
-                } 
-                else if (response.user.doctor_id !== null){
-                    setDoctor(response.user.doctor_id);
-                    navigate("/doctor");
-                }
-                else {
-                    navigate("/");
+                if (loc.state && loc.state.prev){
+                    navigate(loc.state.prev);
+                } else {
+                    if(response.user.admin === true){
+                        setAdmin(true);
+                        navigate("/admin");
+                    } 
+                    else if (response.user.doctor_id !== null){
+                        setDoctor(response.user.doctor_id);
+                        navigate("/doctor");
+                    }
+                    else {
+                        navigate("/");
+                    }
                 }
             })
         }).catch((error) => {

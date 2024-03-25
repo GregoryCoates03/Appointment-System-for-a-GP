@@ -17,7 +17,7 @@ const Navbar = (props) => {
     return (
         <nav className="flex justify-center bg-sky-600 space-x-10 text-white font-serif">
             <Link to={admin ? '/admin/' : doctor ? '/doctor/' : '/'} className="no-underline">{admin ? 'ADMIN' : doctor ? 'DOCTOR' : 'PATIENT'}</Link>
-            <Link to={user ? '/appointments/' : `/appointments/${user.preferred_doctors}/`} className="no-underline">APPOINTMENTS</Link>
+            <Link to={user ? '/appointments/' : `/appointments/${user.location_id}/`} className="no-underline">APPOINTMENTS</Link>
             <Link to={'/information/'} className="no-underline">INFORMATION</Link>
             {signedIn ? <button onClick={handleClick}>LOG OUT</button> : <Link to='/sign-in/' className="no-underline">SIGN IN</Link>}
         </nav>

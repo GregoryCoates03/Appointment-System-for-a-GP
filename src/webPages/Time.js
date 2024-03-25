@@ -130,7 +130,7 @@ const Time = () => {
             )) : (
                     <div className="flex flex-col items-center my-1">
                         <h1 className="text-red-500">{`Sorry, there are no appointments with ${selectedDoctorName} available on ${date}`}</h1>
-                        <button id="waiting_list" className="bg-sky-600 text-white my-1 border-2 border-black" onClick={waitingList ? '' : handleClick} disabled={waitingList ? true : false}>{waitingList ? 'Already On Waiting List' : 'Join Waiting List'}</button>
+                        <button id="waiting_list" className={waitingList ? "bg-red-500 text-white my-1 border-2 border-black" : "bg-sky-600 text-white my-1 border-2 border-black"} onClick={waitingList ? '' : handleClick} disabled={waitingList ? true : false}>{waitingList ? 'Already On Waiting List' : 'Join Waiting List'}</button>
                         <button className="bg-sky-600 text-white my-1 border-2 border-black" onClick={() => navigate(-1)}>Book a Different Day</button>
                     </div>
                 )}

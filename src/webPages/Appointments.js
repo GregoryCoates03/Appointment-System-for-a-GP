@@ -9,7 +9,7 @@ const Appointments = (props) => {
     //console.log(user);
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(user.preferred_doctors);
+    const [selectedLocation, setSelectedLocation] = useState(user.location_id);
     const [selectedLocationName, setSelectedLocationName] = useState("");
     const [preferredLocationName, setPreferredLocationName] = useState("");
     
@@ -17,9 +17,18 @@ const Appointments = (props) => {
         try {
             const response = await axios.get(`http://localhost:3001/api/locations`);
             setLocations(response.data);
-            console.log(locations);
-            const location = response.data.find((location) => location.location_id == user.preferred_doctors);
-            //preferredLocationName = location.location_name;
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const setLocationNames = async () => {
+        try {
+            console.log(locations)
+            console.log(user.location_id)
+            const location = locations.find((location) => location.location_id === user.location_id);
+            console.log(location)
             setPreferredLocationName(location.location_name);
             setSelectedLocationName(location.location_name);
         } catch (error) {
@@ -30,6 +39,10 @@ const Appointments = (props) => {
     useEffect(() => {
         getLocations();
     }, []);
+
+    useEffect(() => {
+        setLocationNames();
+    }, [locations, user.location_id]);
 
     const handleLocationChange = (event) => {
         setSelectedLocation(event.target.value);

@@ -63,11 +63,11 @@ suite('Functional Tests', () => {
                     phone_number: "123-456-789",
                     address: "Test",
                     password: "Test",
-                    preferred_doctors: "Test"
+                    location_id: location
                 });
 
             //console.log(body[0])
-            const { user_id, first_name, family_name, email, phone_number, address, password, preferred_doctors, waiting_list_position, admin } = body[0];
+            const { user_id, first_name, family_name, email, phone_number, address, password, location_id, waiting_list_points, admin } = body[0];
             user = user_id;
             assert.equal(first_name, "Test");
             assert.equal(family_name, "Test"),
@@ -75,8 +75,8 @@ suite('Functional Tests', () => {
             assert.equal(phone_number, "123-456-789");
             assert.equal(address, "Test");
             // PASSWORD COMPARE WITH BCRYPT
-            assert.equal(preferred_doctors, "Test");
-            assert.equal(waiting_list_position, 0);
+            assert.equal(location_id, location);
+            assert.equal(waiting_list_points, 0);
             assert.equal(admin, false);
         });
 
@@ -86,7 +86,7 @@ suite('Functional Tests', () => {
                 .keepOpen()
                 .get('/api/users/' + user)
             
-            const { user_id, first_name, family_name, email, phone_number, address, password, preferred_doctors, waiting_list_position, admin } = body[0];
+            const { user_id, first_name, family_name, email, phone_number, address, password, location_id, waiting_list_points, admin } = body[0];
             user = user_id;
             assert.equal(first_name, "Test");
             assert.equal(family_name, "Test"),
@@ -94,8 +94,8 @@ suite('Functional Tests', () => {
             assert.equal(phone_number, "123-456-789");
             assert.equal(address, "Test");
             // PASSWORD COMPARE WITH BCRYPT
-            assert.equal(preferred_doctors, "Test");
-            assert.equal(waiting_list_position, 0);
+            assert.equal(location_id, location);
+            assert.equal(waiting_list_points, 0);
             assert.equal(admin, false);
         });
 
@@ -109,18 +109,16 @@ suite('Functional Tests', () => {
                     family_name: "Updated",
                     email: "Updated@Updated",
                     address: "Updated",
-                    password: "Updated",
-                    preferred_doctors: "Updated"
+                    password: "Updated"
                 });
 
             console.log(body);
-            const { first_name, family_name, email, phone_number, address, password, preferred_doctors } = body[0];
+            const { first_name, family_name, email, phone_number, address, password } = body[0];
             assert.equal(first_name, "Updated");
             assert.equal(family_name, "Updated"),
             assert.equal(email, "Updated@Updated");
             assert.equal(address, "Updated");
             // PASSWORD COMPARE WITH BCRYPT
-            assert.equal(preferred_doctors, "Updated");
         });
 
         test('Login User', async () => {

@@ -13,7 +13,7 @@ const CreateAccount = (props) => {
         address: "",
         password: "",
         confirm_password: "",
-        preferred_doctors: 1
+        location_id: 1
     });
 
     const [locations, setLocations] = useState([]);
@@ -41,12 +41,12 @@ const CreateAccount = (props) => {
     const handleLocationChange = (event) => {
         console.log(event.target.value);
         setSelectedLocation(event.target.value);
-        setState((state) => ({...state, preferred_doctors: event.target.value}));
+        setState((state) => ({...state, location_id: event.target.value}));
     }
     
     const handleSubmit = (event) => {
         event.preventDefault();
-        const { first_name, family_name, email, confirm_email, phone_number, address, password, confirm_password, preferred_doctors } = state;
+        const { first_name, family_name, email, confirm_email, phone_number, address, password, confirm_password, location_id } = state;
         let email_same = false;
         let password_same = false;
         const error = document.getElementById('error');
@@ -64,7 +64,7 @@ const CreateAccount = (props) => {
         }
 
         if (email_same && password_same){
-            createAccount({ first_name, family_name, email, phone_number, address, password, preferred_doctors }).then((response) => {
+            createAccount({ first_name, family_name, email, phone_number, address, password, location_id }).then((response) => {
                 if (response === true){
                     error.textContent = "Email already exists";
                 } else {
@@ -98,7 +98,7 @@ const CreateAccount = (props) => {
                 <input id="password" name="password" type="password" className="bg-gray-400" value={state.password} onChange={handleChange}/>
                 <label htmlFor="confirm_password">Confirm Password:</label>
                 <input id="confirm_password" name="confirm_password" type="password" className="bg-gray-400" value={state.confirm_password} onChange={handleChange}/>
-                <label htmlFor="preferred_doctors">Preferred Doctors:</label>
+                <label htmlFor="location_id">Preferred Doctors:</label>
                 <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
                     {locations.map((location) => (
                         <option key={location.location_id} value={location.location_id}>
