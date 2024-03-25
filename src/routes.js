@@ -333,14 +333,12 @@ module.exports = (app, db) => {
             subject: 'Available Appointment',
             html: ` <div>
                         <p>A patient has cancelled an appointment so it is now available for you. Click the link below if you would like to book it.<p>
-                        <a href=\"http://localhost:3000/appointments/${req.body.location_id}/${req.body.doctor_id}/${encodeURIComponent(new Date(req.body.date).toLocaleDateString())}/${req.body.time}?state={}\">Book Here</a>
+                        <a href=\"http://localhost:3000/appointments/${req.body.location_id}/${req.body.doctor_id}/${encodeURIComponent(new Date(req.body.date).toLocaleDateString())}/${req.body.time}?cancellation=true\">Book Here</a>
                     </div>
                 `
         }
 
         sendEmail(mailOptions);
-
-        res.json("aaaaaaaaaaaa")
     })
 
     app.route('/api/upgrade')
@@ -395,6 +393,14 @@ module.exports = (app, db) => {
             res.status(500).send('Internal Server Error');
         }
     })
+    .delete(async (req, res) => {
+        try {
+            const result = await db.query('DELETE FROM waiting_list WHERE user_id=$1 AND doctor_id=$2 AND location_id=$3 AND date=$4 RETURNING *;', [req.user.user_id, req.query.doctor_id, req.query.location_id, req.query.date]);
+            res.json(result.rows);
+        } catch (err) {
+            res.status(500).send('Internal Server Error');
+        }
+    })
 
     app.route('/api/increment')
     .put(async (req, res) => {
@@ -405,4 +411,14 @@ module.exports = (app, db) => {
             console.log(err);
         }
     });
+
+    app.route('/api/reset')
+    .put(async (req, res) => {
+        try {
+            const result = await db.query('UPDATE users SET waiting_list_points=0 WHERE user_id=$1 RETURNING *;', [req.user.user_id]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 }

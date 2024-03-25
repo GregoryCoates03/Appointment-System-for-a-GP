@@ -33,7 +33,7 @@ const SignIn = (props) => {
                     location_id: response.user.location_id
                 })
                 if (loc.state && loc.state.prev){
-                    navigate(loc.state.prev);
+                    navigate(loc.state.prev + "?cancellation=true");
                 } else {
                     if(response.user.admin === true){
                         setAdmin(true);

@@ -29,8 +29,8 @@ const Time = () => {
 
     const checkWaitingList = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/waiting-list`);
-            //console.log(response.data);
+            const response = await axios.get(`http://localhost:3001/api/check-waiting-list?date=${date}&doctor_id=${doctor}&location_id=${location}`);
+            console.log(response.data);
             if (response.data.length > 0){
                 setWaitingList(true);
             }

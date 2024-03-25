@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 const Confirm = () => {
     const { location, doctor, date, time } = useParams();
     const loc = useLocation();
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams
+    const cancellation = new URLSearchParams(loc.search).get("cancellation");
+    console.log(cancellation);
     const navigate = useNavigate();
     console.log(loc)
     //const { selectedLocationName, selectedDoctorName } = loc.state || {};
@@ -33,7 +37,7 @@ const Confirm = () => {
             setSelectedLocationName(loc.state.selectedLocationName);
             setSelectedDoctorName(loc.state.selectedDoctorName);
         }
-    }, [selectedLocationName, selectedDoctorName])
+    }, [])
 
     const handleClick = async () => {
         try {
@@ -52,6 +56,10 @@ const Confirm = () => {
                 axios.post('http://localhost:3001/api/confirmation/', {
                     text: `Appointment with ${selectedDoctorName} in ${selectedLocationName} at ${time} is booked.`
                 });
+            }
+            if (cancellation) {
+                axios.delete(`http://localhost:3001/api/check-waiting-list?doctor_id=${doctor}&location_id=${location}&date=${date}`);
+                axios.put(`http://localhost:3001/api/reset`);
             }
             console.log(response.data); 
         } catch (error) {
