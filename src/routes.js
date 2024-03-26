@@ -431,4 +431,15 @@ module.exports = (app, db) => {
             console.log(err);
         }
     })
+
+    app.route('/api/email-list')
+    .get(async (req, res) => {
+        try {
+            console.log(req.query.date);
+            const result = await db.query('SELECT a.time, a.date, u.email FROM appointments AS a JOIN users AS u ON a.user_id=u.user_id WHERE date = $1;', [req.query.date]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 }
