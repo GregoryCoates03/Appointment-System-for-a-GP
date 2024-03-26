@@ -421,4 +421,14 @@ module.exports = (app, db) => {
             console.log(err);
         }
     })
+
+    app.route('/api/risk')
+    .put(async (req, res) => {
+        try {
+            const result = await db.query('UPDATE users SET at_risk=$1 WHERE email=$2 RETURNING *;', [req.body.risk, req.body.email]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+        }
+    })
 }

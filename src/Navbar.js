@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { logOutUser } from './databaseInteraction';
 
@@ -15,7 +15,7 @@ const Navbar = (props) => {
     
     //<Link to={'/prescriptions/'} className="no-underline">PRESCRIPTIONS</Link>
     return (
-        <nav className="flex justify-center bg-sky-600 space-x-10 text-white font-serif">
+        <nav className="flex flex-wrap justify-center bg-sky-600 space-x-10 text-white font-serif">
             <Link to={admin ? '/admin/' : doctor ? '/doctor/' : '/'} className="no-underline">{admin ? 'ADMIN' : doctor ? 'DOCTOR' : 'PATIENT'}</Link>
             <Link to={user ? '/appointments/' : `/appointments/${user.location_id}/`} className="no-underline">APPOINTMENTS</Link>
             <Link to={'/information/'} className="no-underline">INFORMATION</Link>

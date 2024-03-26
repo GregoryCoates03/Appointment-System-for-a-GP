@@ -73,7 +73,7 @@ const UpcomingAndPast = () => {
                             <h1>{"Time: " + appointment.time.split(":").slice(0, 2).join(":")}</h1>
                             <h1>{"Location: " + appointment.location_name}</h1>
                             <h1>{"Doctor: " + appointment.first_name + " " + appointment.last_name}</h1>
-                            <button className="border-2 border-solid border-black my-1 bg-red-500 text-white p-5 text-left" onClick={() => handleClick(appointment.appointment_id, appointment.location_id, appointment.doctor_id, appointment.date, appointment.time)}>Cancel Appointment</button>
+                            <button className="border-2 border-solid border-black my-1 bg-red-500 text-white text-left w-full text-sm" onClick={() => handleClick(appointment.appointment_id, appointment.location_id, appointment.doctor_id, appointment.date, appointment.time)}>Cancel Appointment</button>
                         </div>
                     ))
                 }

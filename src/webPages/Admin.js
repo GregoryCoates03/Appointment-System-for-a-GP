@@ -13,6 +13,7 @@ const Admin = (props) => {
                     {/*<Link className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5" to="/admin/doctor-appointments/">Edit Doctor Appointments</Link>*/}
                     <Link className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5" to="/admin/create-location/">Create Location</Link>
                     <Link className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5" to="/admin/update-location/">Update Location</Link>
+                    <Link className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5" to="/admin/update-risk/">Update Risk</Link>
                 </div>
             </div>
         )

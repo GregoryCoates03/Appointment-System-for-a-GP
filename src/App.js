@@ -21,6 +21,7 @@ import UpdateDoctor from "./webPages/UpdateDoctor";
 import CreateLocation from "./webPages/CreateLocation";
 import DoctorAppointments from "./webPages/DoctorAppointments";
 import DoctorHome from "./webPages/DoctorHome";
+import UpdateRisk from "./webPages/UpdateRisk";
 
 const App = () => {
   const [signedIn, setSignedIn] = useState(false);
@@ -55,6 +56,7 @@ const App = () => {
             <Route exact path="/admin/doctor-appointments" element={<DoctorAppointments admin={admin} />} />
             <Route exact path="/admin/create-location/" element={<CreateLocation admin={admin} />} />
             <Route exact path="/admin/update-location/" element={<UpdateLocation admin={admin} />} />
+            <Route exact path="/admin/update-risk/" element={<UpdateRisk admin={admin} />} />
             <Route exact path="/doctor/" element={<DoctorHome doctor={doctor} user={user} />} />
           </Routes>
     </BrowserRouter>
