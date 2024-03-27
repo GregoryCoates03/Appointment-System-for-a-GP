@@ -34,9 +34,12 @@ module.exports = (app, db) => {
     })
     .put(async (req, res) => {
         try {
-            req.body.password = await bcrypt.hash(req.body.password || '', saltRounds);
-            
+            if (req.body.password !== undefined && req.body.password != "") {
+                req.body.password = await bcrypt.hash(req.body.password, saltRounds);
+            }
+            console.log("dddddddddddddd" + req.body);
             let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1 RETURNING *;`, [req.params.user_id, ...Object.values(req.body)]);
+            console.log(result);
             res.send(result.rows);
         } catch (err) {
             console.error(err);
@@ -79,12 +82,15 @@ module.exports = (app, db) => {
     app.route('/api/exists/')
     .post(async (req, res) => {
         try {
-            const result = await db.query(`SELECT email, password FROM users WHERE email = $1;`, [req.body.email]);
-            
+            const result = await db.query(`SELECT email, password, user_id FROM users WHERE email = $1;`, [req.body.email]);
             if (result.rows.length > 0) {
-                res.json(`Email already exists`);
+                if (result.rows[0].user_id != req.body.user_id){
+                   res.json({ exists: true });
+                } else {
+                    res.json({ exists: false });
+                }
             } else {
-                res.json(`Email doesn't exist`);
+                res.json({ exists: false });
             }
         } catch (err) {
             console.log(err);

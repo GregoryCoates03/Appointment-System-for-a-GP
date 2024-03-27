@@ -58,7 +58,8 @@ const Information = (props) => {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setState((state) => ({...state, [name]: value}));
-        //console.log(name, value);
+        console.log(name, value);
+        console.log(state)
     }
 
     const handleLocationChange = (event) => {
@@ -91,12 +92,27 @@ const Information = (props) => {
             email = new_email;
         }
 
-        if (password_same){
-            updateAccount({ user_id, email, phone_number, address, password, location_id }).then((response) => {
-                if (response === true){
+        if (password_same || password === ""){
+            console.log("Aaaaaaaaaaaaaaaaaaaaa");
+            let details = { user_id, email, phone_number, address, password, location_id };
+            let properDetails = {};
+
+            for (const item in details) {
+                if (details[item] !== ""){
+                    properDetails[item] = details[item];
+                }
+            }
+
+            console.log(details);
+            console.log(properDetails);
+
+            updateAccount(properDetails).then((response) => {
+                console.log(response);
+                if (response){
                     error.textContent = "Email already exists";
+                    error.className = "text-red-500";
                 } else {
-                    error.textContent = "Account created";
+                    error.textContent = "Account updated";
                     error.className = "text-green-500";
                 }
             }).catch((error) => {

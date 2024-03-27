@@ -102,18 +102,19 @@ const updateDoctor = (details) => {
 }
 
 const updateAccount = (details) => {
-    var emailExists = false;
-    return axios.post(`http://localhost:3001/api/exists/`, { email: details.email }).then((response) => {
-        //console.log(response.data);
-        if(response.data === "Email already exists"){
-            emailExists = true;
-            return emailExists;
-        }    
-        //console.log(details)
-        if (!emailExists){
-            axios.put(`http://localhost:3001/api/users/${details.user_id}`, details).then((response) => {
+    //var emailExists = false;
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    return axios.post(`http://localhost:3001/api/exists/`, { email: details.email, user_id: details.user_id }).then((response) => {
+        console.log(response);
+        if(response.data.exists){
+            //console.log("bbbbbbbbbb")
+            //emailExists = true;
+            return true;
+        } else {
+            console.log("aaaaaaaaa")
+            return axios.put(`http://localhost:3001/api/users/${details.user_id}`, details).then((response) => {
                 console.log(response.data);
-                return emailExists;
+                return false;
             }).catch((error) => {
                 console.log(error);
             });

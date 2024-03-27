@@ -69,17 +69,17 @@ authUser = async (email, password, done) => {
 passport.use(new localStrategy ({ usernameField: "email", passwordField: "password" }, authUser));
 
 passport.serializeUser((userObj, done) => {
-    console.log("SERIALISE")
-    console.log(userObj.user_id);
+    //console.log("SERIALISE")
+    //console.log(userObj.user_id);
     done(null, userObj.user_id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log("DESERIALISE");
+    //console.log("DESERIALISE");
     try {
         const result = await db.query(`SELECT * FROM users WHERE user_id = $1;`, [id]);
         const user = result.rows[0];
-        console.log(user);
+        //console.log(user);
         done(null, user);
     } catch (err) {
         console.log(err);
