@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const sendEmail = require('./email');
+const ical = require('ical-generator').default;
 require('dotenv').config({ path: 'secret.env'});
 const saltRounds = 12;
 
@@ -37,9 +38,9 @@ module.exports = (app, db) => {
             if (req.body.password !== undefined && req.body.password != "") {
                 req.body.password = await bcrypt.hash(req.body.password, saltRounds);
             }
-            console.log("dddddddddddddd" + req.body);
+            //console.log("dddddddddddddd" + req.body);
             let result = await db.query(`UPDATE users SET ${updateCategories(req.body)} WHERE user_id = $1 RETURNING *;`, [req.params.user_id, ...Object.values(req.body)]);
-            console.log(result);
+            //console.log(result);
             res.send(result.rows);
         } catch (err) {
             console.error(err);
@@ -320,11 +321,41 @@ module.exports = (app, db) => {
 
     app.route('/api/confirmation/')
     .post(async (req, res) => {
+        //https://manishbit97.medium.com/sending-email-via-node-js-with-calendar-invite-2ebf8637b22f
+
+        const cal = ical({name: "Test"});
+        console.log(req.body.date);
+        const { date, time, doctor, location } = req.body;
+        const [day, month, year] = date.split("/");
+        const [hour, minute, second] = time.split(":");
+
+        const startTime = new Date(year, month - 1, day, hour, minute, second);
+        const endTime = new Date(startTime);
+        endTime.setMinutes(startTime.getMinutes() + 20);
+
+        console.log(startTime);
+        console.log(endTime);
+
+        cal.createEvent({
+            start: startTime,
+            end: endTime,
+            summary: 'Appointment',
+            description: `Appointment with ${doctor}`,
+            location: location
+        })
+
         const mailOptions = {
             from: process.env.EMAIL_EMAIL,
             to: req.user.email,
             subject: 'Appointment Confirmation',
-            text: req.body.text
+            text: req.body.text,
+            attachments: [
+                {
+                    filename: 'appointment.ics',
+                    content: cal.toString(),
+                    contentType: 'text/calendar'
+                }
+            ]
         }
 
         sendEmail(mailOptions);

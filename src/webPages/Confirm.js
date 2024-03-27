@@ -54,7 +54,11 @@ const Confirm = () => {
                 button.disabled = true;
                 button.textContent = "Appointment Booked"
                 axios.post('http://localhost:3001/api/confirmation/', {
-                    text: `Appointment with ${selectedDoctorName} in ${selectedLocationName} at ${time} is booked.`
+                    text: `Appointment with ${selectedDoctorName} in ${selectedLocationName} at ${time} is booked.`,
+                    doctor: selectedDoctorName,
+                    location: selectedLocationName,
+                    date,
+                    time
                 });
             }
             if (cancellation) {

@@ -103,11 +103,11 @@ const Information = (props) => {
                 }
             }
 
-            console.log(details);
-            console.log(properDetails);
+            //console.log(details);
+            //console.log(properDetails);
 
             updateAccount(properDetails).then((response) => {
-                console.log(response);
+                //console.log(response);
                 if (response){
                     error.textContent = "Email already exists";
                     error.className = "text-red-500";

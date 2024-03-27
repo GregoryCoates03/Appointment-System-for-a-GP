@@ -60,11 +60,14 @@ const Time = () => {
     
             const startParts = doctorDetails[0].start_time.split(":");
             const endParts = doctorDetails[0].end_time.split(":");
+            const breakParts = doctorDetails[0].break_time.split(":");
         
-            const start = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], startParts[0], startParts[1], startParts[2]); // https://stackoverflow.com/questions/33299687/how-to-convert-dd-mm-yyyy-string-into-javascript-date-object
-            const end = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], endParts[0], endParts[1], endParts[2]);
-            console.log(start);
-            createTimes(start, end);
+            const startTime = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], startParts[0], startParts[1], startParts[2]); // https://stackoverflow.com/questions/33299687/how-to-convert-dd-mm-yyyy-string-into-javascript-date-object
+            const endTime = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], endParts[0], endParts[1], endParts[2]);
+            const breakTime = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], breakParts[0], breakParts[1], breakParts[2]);
+            
+            console.log(startTime);
+            createTimes(startTime, endTime, breakTime);
         }
     }
 
@@ -82,21 +85,27 @@ const Time = () => {
         }
     }
 
-    const createTimes = (start, end) => {
+    const createTimes = (startTime, endTime, breakTime) => {
         const times = [];
         console.log(booked);
-        let time = start;
+        let time = startTime;
+        let endOfBreakTime = new Date(breakTime);
+        endOfBreakTime.setMinutes(time.getMinutes() + 40);
+        console.log("a" + breakTime);
+        console.log("b" + endOfBreakTime);
 
-        while (time < end){
+        while (time < endTime){
             //console.log(time);
-            console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
-            console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
+            //console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
+            //console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
             /*console.log("aaaaaaaaa" + typeof time)
             console.log(time2.getUTCHours())
             console.log(time2.getUTCMinutes())
             console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
-            if (!booked.includes(`${String(time.getHours()).length === 1 ? "0" + time.getHours() : time.getHours()}:${String(time.getMinutes()).length === 1 ? "0" + time.getMinutes() : time.getMinutes()}:00`)){
-                times.push(new Date(time));
+            if (!(time >= breakTime && time < endOfBreakTime)){
+                if (!booked.includes(`${String(time.getHours()).length === 1 ? "0" + time.getHours() : time.getHours()}:${String(time.getMinutes()).length === 1 ? "0" + time.getMinutes() : time.getMinutes()}:00`)){
+                    times.push(new Date(time));
+                }
             }
             time.setMinutes(time.getMinutes() + 20);
         }
