@@ -11,10 +11,10 @@ axios.defaults.withCredentials = true;
 }*/
 
 const createAccount = (userDetails) => {
-    console.log(userDetails);
+    //console.log(userDetails);
     var emailExists = false;
     return axios.post(`http://localhost:3001/api/exists/`, { email: userDetails.email }).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         if(response.data === "Email already exists"){
             emailExists = true;
             return emailExists;
@@ -65,7 +65,7 @@ const isAuthenticated  = () => {
 
 const getUser = () => {
     return axios.get(`http://localhost:3001/api/signed-in/`).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         return response.data;
     }).catch((error) => {
         console.log(error);
@@ -83,7 +83,7 @@ const logOutUser = () => {
 
 const getLocations = () => {
     return axios.get(`http://localhost:3001/api/locations`).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         return response.data;
     }).catch((error) => {
         console.log(error);
@@ -92,7 +92,7 @@ const getLocations = () => {
 
 const updateDoctor = (details) => {
     return axios.put(`http://localhost:3001/api/doctors/${details.doctor_id}`, details).then((response) => { 
-        console.log(response);
+        //console.log(response);
         if (response.status === 200) {
             return true;
         } else {
@@ -104,12 +104,12 @@ const updateDoctor = (details) => {
 const updateAccount = (details) => {
     var emailExists = false;
     return axios.post(`http://localhost:3001/api/exists/`, { email: details.email }).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         if(response.data === "Email already exists"){
             emailExists = true;
             return emailExists;
         }    
-        console.log(details)
+        //console.log(details)
         if (!emailExists){
             axios.put(`http://localhost:3001/api/users/${details.user_id}`, details).then((response) => {
                 console.log(response.data);
@@ -124,7 +124,7 @@ const updateAccount = (details) => {
 }
 
 const updateLocation = (details) => {
-    console.log(details)
+    //console.log(details)
     return axios.put(`http://localhost:3001/api/locations/${details.selectedLocation}`, {location_name: details.locationName}).then((response) => {
         console.log(response.data);
         return response.data;

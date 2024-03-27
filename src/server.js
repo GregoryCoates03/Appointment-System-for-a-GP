@@ -57,7 +57,6 @@ authUser = async (email, password, done) => {
                 console.log(user);
                 return done(null, user);
             } else {
-                console.log("aaaaaaa")
                 return done(null, false, { message: "Invalid credentials" });
             }
         });

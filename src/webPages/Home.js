@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "../databaseInteraction";
 import { getUser } from "../databaseInteraction";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Home = (props) => {
-    const { setSignedIn } = props;
+    const { signedIn } = props;
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+    const loc = useLocation();
 
     const handleGetUser = async () => {
         try {
             const userData = await getUser().then((response) => {
-                console.log("bbbbbbbbbbb")
-                console.log(response);
+                //console.log("bbbbbbbbbbb")
+                //console.log(response);
                 return response.user;
             });
-            setUser(userData);
-            console.log("aaaaaaaaaaa")
-            console.log(userData)
+            if (userData !== undefined){
+                setUser(userData);
+            }
+            //console.log("aaaaaaaaaaa")
+            //console.log(userData)
         } catch (error) {
             console.log(error);
         }
     };
 
     useEffect(() => {
+        if (!signedIn) {
+            navigate('/sign-in', { state: { prev: loc.pathname }});
+        }
         handleGetUser();
     }, []);
 
@@ -36,14 +43,7 @@ const Home = (props) => {
                     </div>
             </div>
         )
-    } else {
-        return (
-            <div className="flex flex-col items-center">
-                <Link to='/sign-in/' className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5">Sign In</Link>
-            </div>
-        )
     }
-
 }
 
 export default Home;

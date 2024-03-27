@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { updateAccount } from "../databaseInteraction";
 import axios from "axios";
 
 const Information = (props) => {
     const { signedIn } = props;
+    const navigate = useNavigate()
+    const loc = useLocation();
 
     const [state, setState] = useState({
         user_id: "",
@@ -27,8 +29,10 @@ const Information = (props) => {
     const getUser = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/api/signed-in`);
-            const { user_id, first_name, family_name, email, phone_number, address, location_id } = response.data.user;
-            setState({...state, user_id, first_name, family_name, email, phone_number, address, location_id });
+            if (response.data.isAuthenticated) {
+                const { user_id, first_name, family_name, email, phone_number, address, location_id } = response.data.user;
+                setState({...state, user_id, first_name, family_name, email, phone_number, address, location_id });
+            }
         } catch (error) {
             console.log(error);
         }
@@ -44,22 +48,21 @@ const Information = (props) => {
     }
 
     useEffect(() => {
+        if (!signedIn) {
+            navigate('/sign-in', { state: { prev: loc.pathname }});
+        }
         getLocations();
         getUser();
     }, []);
 
-    useEffect(() => {
-        console.log(state);
-    }, [state])
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setState((state) => ({...state, [name]: value}));
-        console.log(name, value);
+        //console.log(name, value);
     }
 
     const handleLocationChange = (event) => {
-        console.log(event.target.value);
+        //console.log(event.target.value);
         setSelectedLocation(event.target.value);
         setState((state) => ({...state, location_id: event.target.value}));
     }
@@ -138,12 +141,6 @@ const Information = (props) => {
                     <button type="submit" className="text-lime-500">Update Account</button>
                 </form>
                 <p id="error" className="text-red-500"></p>
-            </div>
-        )
-    } else {
-        return (
-            <div className="flex flex-col items-center">
-                <Link to='/sign-in/' className="border-2 border-solid border-black my-2 bg-sky-600 text-white p-5">Sign In</Link>
             </div>
         )
     }

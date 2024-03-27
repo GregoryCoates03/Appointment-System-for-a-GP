@@ -24,7 +24,7 @@ const task = cron.schedule('*/10 * * * *', async () => {
                 from: process.env.EMAIL_EMAIL,
                 to: appointment.email,
                 subject: 'Appointment Reminder',
-                text: `Reminder of your appointment on the ${new Date(appointment.date).toLocaleDateString()} at ${appointment.time}`
+                text: `Reminder of your appointment on the ${new Date(appointment.date).toLocaleDateString()} at ${appointment.time}.`
             });
         }
     });

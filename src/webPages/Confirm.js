@@ -20,7 +20,7 @@ const Confirm = () => {
             const response = await axios.get(`http://localhost:3001/api/signed-in`);
             if (!response.data.isAuthenticated){
                 console.log(loc.pathname);
-                navigate('/sign-in/', { state: { prev: loc.pathname }});
+                navigate('/sign-in/', { state: { prev: loc.pathname, query: '?cancellation=true' }});
             }
         }
         checkSignedIn();
