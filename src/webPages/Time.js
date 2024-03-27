@@ -94,6 +94,8 @@ const Time = () => {
         console.log("a" + breakTime);
         console.log("b" + endOfBreakTime);
 
+        const currentTime = new Date();
+
         while (time < endTime){
             //console.log(time);
             //console.log(`${String(time.getUTCHours()).length === 1 ? "0" + time.getUTCHours() : time.getUTCHours()}:${String(time.getUTCMinutes()).length === 1 ? "0" + time.getUTCMinutes() : time.getUTCMinutes()}:00`);
@@ -102,7 +104,7 @@ const Time = () => {
             console.log(time2.getUTCHours())
             console.log(time2.getUTCMinutes())
             console.log(time2.getUTCHours() + ":" + time2.getMinutes());*/
-            if (!(time >= breakTime && time < endOfBreakTime)){
+            if (!(time >= breakTime && time < endOfBreakTime) && time > currentTime){
                 if (!booked.includes(`${String(time.getHours()).length === 1 ? "0" + time.getHours() : time.getHours()}:${String(time.getMinutes()).length === 1 ? "0" + time.getMinutes() : time.getMinutes()}:00`)){
                     times.push(new Date(time));
                 }
