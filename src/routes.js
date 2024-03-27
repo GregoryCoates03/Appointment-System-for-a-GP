@@ -433,7 +433,9 @@ module.exports = (app, db) => {
     .delete(async (req, res) => {
         try {
             const result = await db.query('DELETE FROM waiting_list WHERE user_id=$1 AND doctor_id=$2 AND location_id=$3 AND date=$4 RETURNING *;', [req.user.user_id, req.query.doctor_id, req.query.location_id, req.query.date]);
-            res.json(result.rows);
+            res.json({
+                message: "Removed User From Waiting List"
+            });
         } catch (err) {
             res.status(500).send('Internal Server Error');
         }
@@ -472,7 +474,7 @@ module.exports = (app, db) => {
     app.route('/api/email-list')
     .get(async (req, res) => {
         try {
-            console.log(req.query.date);
+            //console.log(req.query.date);
             const result = await db.query('SELECT a.time, a.date, u.email FROM appointments AS a JOIN users AS u ON a.user_id=u.user_id WHERE date = $1;', [req.query.date]);
             res.json(result.rows);
         } catch (err) {
