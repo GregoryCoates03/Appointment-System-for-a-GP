@@ -17,11 +17,21 @@ const CreateLocation = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const { location_name } = state;
+        const error = document.getElementById('error');
 
         axios.post(`http://localhost:3001/api/locations`, {location_name}).then((response) => {
-            console.log(response.data);
+            console.log(response.status);
+            if (response.status === 200){
+                error.textContent = "Location created";
+                error.className = "text-green-500";
+            } else {
+                error.textContent = "Error";
+                error.className = "text-red-500";
+            }
         }).catch((error) => {
             console.log(error);
+            error.textContent = "Error";
+            error.className = "text-red-500";
         });
     }
 
@@ -34,6 +44,7 @@ const CreateLocation = (props) => {
                     <input id="location_name" name="location_name" type="text" className="bg-gray-400" value={state.location_name} onChange={handleChange} />
                     <button type="submit" className="text-lime-500">Create Location</button>
                 </form>
+                <p id="error" className="text-red-500"></p>
             </div>
         )  
     } else {

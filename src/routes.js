@@ -227,7 +227,7 @@ module.exports = (app, db) => {
     })
     .post(async (req, res) => {
         try {
-            const result = await db.query('INSERT INTO doctors (first_name, last_name, location_id, start_time, end_time, break_time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;', [req.body.first_name, req.body.last_name, req.body.location_id, req.body.start_time, req.body.end_time, req.body.break_time]);
+            const result = await db.query('INSERT INTO doctors (first_name, last_name, location_id, start_time, end_time, break_time, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *;', [req.body.first_name, req.body.last_name, req.body.location_id, req.body.start_time, req.body.end_time, req.body.break_time, req.body.monday, req.body.tuesday, req.body.wednesday, req.body.thursday, req.body.friday, req.body.saturday, req.body.sunday]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);
@@ -476,6 +476,16 @@ module.exports = (app, db) => {
         try {
             //console.log(req.query.date);
             const result = await db.query('SELECT a.time, a.date, u.email FROM appointments AS a JOIN users AS u ON a.user_id=u.user_id WHERE date = $1;', [req.query.date]);
+            res.json(result.rows);
+        } catch (err) {
+            console.log(err);
+        }
+    })
+
+    app.route('/api/doctor-days')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM doctors WHERE doctor_id = $1;', [req.query.doctor_id]);
             res.json(result.rows);
         } catch (err) {
             console.log(err);
