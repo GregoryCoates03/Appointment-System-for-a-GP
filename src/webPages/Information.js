@@ -93,7 +93,7 @@ const Information = (props) => {
         }
 
         if (password_same || password === ""){
-            console.log("Aaaaaaaaaaaaaaaaaaaaa");
+            //console.log("Aaaaaaaaaaaaaaaaaaaaa");
             let details = { user_id, email, phone_number, address, password, location_id };
             let properDetails = {};
 

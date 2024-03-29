@@ -103,7 +103,7 @@ const updateDoctor = (details) => {
 
 const updateAccount = (details) => {
     //var emailExists = false;
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     return axios.post(`http://localhost:3001/api/exists/`, { email: details.email, user_id: details.user_id }).then((response) => {
         console.log(response);
         if(response.data.exists){
@@ -111,7 +111,7 @@ const updateAccount = (details) => {
             //emailExists = true;
             return true;
         } else {
-            console.log("aaaaaaaaa")
+            //console.log("aaaaaaaaa")
             return axios.put(`http://localhost:3001/api/users/${details.user_id}`, details).then((response) => {
                 console.log(response.data);
                 return false;
