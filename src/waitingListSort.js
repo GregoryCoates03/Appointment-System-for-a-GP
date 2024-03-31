@@ -10,7 +10,7 @@ export default class waitingList {
     }
 
     setWaitingList = async () => {
-        const response = await axios.get(`http://localhost:3001/api/check-waiting-list?date=${this.date}&doctor_id=${this.doctor_id}&location_id=${this.location_id}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/check-waiting-list?date=${this.date}&doctor_id=${this.doctor_id}&location_id=${this.location_id}`);
         this.waitingList = response.data;
     }
 

@@ -20,7 +20,7 @@ const Time = () => {
 
     const getDoctorDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/doctors/${doctor}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/doctors/${doctor}`);
             setDoctorDetails(response.data);
         } catch (error) {
             console.log(error);
@@ -29,7 +29,7 @@ const Time = () => {
 
     const checkWaitingList = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/check-waiting-list?date=${date}&doctor_id=${doctor}&location_id=${location}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/check-waiting-list?date=${date}&doctor_id=${doctor}&location_id=${location}`);
             console.log(response.data);
             if (response.data.length > 0){
                 setWaitingList(true);
@@ -75,7 +75,7 @@ const Time = () => {
         try {
             const [day, month, year] = date.split("/");
             const ISODate = new Date(`${year}-${month}-${day}`).toISOString();
-            const response = await axios.get(`http://localhost:3001/api/booked-appointments/${location}/${doctor}/${ISODate}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/booked-appointments/${location}/${doctor}/${ISODate}`);
             
             const bookedTimes = response.data.map(appointment => appointment.time);
             
@@ -118,7 +118,7 @@ const Time = () => {
 
     const handleClick = async () => {
         try {
-            const response = await axios.post(`http://localhost:3001/api/join-waiting-list/`, { location_id: location, doctor_id: doctor, date });
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/join-waiting-list/`, { location_id: location, doctor_id: doctor, date });
             const response2 = await axios.put('http://localhost:3001/api/increment');
             const button = document.getElementById("waiting_list")
             button.textContent = "Joined Waiting List"

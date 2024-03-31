@@ -10,7 +10,7 @@ const UpdateRisk = (props) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:3001/api/risk`, { risk, email });
+            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/risk`, { risk, email });
             console.log(response.data);
             const error = document.getElementById('error');
             if (response.data && (response.data[0].at_risk === risk)) {

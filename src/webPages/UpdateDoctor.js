@@ -23,7 +23,7 @@ const UpdateDoctor = (props) => {
 
     const getLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations/`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations/`);
             setLocations(response.data);
         } catch (error) {
             console.log(error);
@@ -32,7 +32,7 @@ const UpdateDoctor = (props) => {
 
     const getDoctors = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations/${selectedLocation}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations/${selectedLocation}`);
             //console.log(response.data)
             setDoctors(response.data);
         } catch (error) {
@@ -44,11 +44,11 @@ const UpdateDoctor = (props) => {
         try {
             setDoctorDetails(null);
             if (selectedDoctor !== 0){
-                const response = await axios.get(`http://localhost:3001/api/doctors/${selectedDoctor}`);
+                const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/doctors/${selectedDoctor}`);
                 //console.log(response.data[0]);
                 setDoctorDetails(response.data[0]);
 
-                const response2 = await axios.get(`http://localhost:3001/api/doctor-days?doctor_id=${selectedDoctor}`);
+                const response2 = await axios.get(`${process.env.REACT_APP_SERVER}/api/doctor-days?doctor_id=${selectedDoctor}`);
                 //console.log(response2.data[0])
                 setWorkingDays(response2.data[0]);
             }

@@ -22,7 +22,7 @@ const Dates = () => {
     }
 
     const doctorDates = async () => {
-        const response = await axios.get(`http://localhost:3001/api/doctor-days?doctor_id=${doctor}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/doctor-days?doctor_id=${doctor}`);
         const week = response.data[0];
         const offDays = [];
         

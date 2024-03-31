@@ -12,7 +12,7 @@ const Doctor = (props) => {
     const getDoctors = async () => {
         try {
             console.log(location);
-            const response = await axios.get(`http://localhost:3001/api/locations/${location}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations/${location}`);
             setDoctors(response.data);
         } catch (error) {
             console.log(error);

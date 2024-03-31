@@ -11,7 +11,7 @@ const task = cron.schedule('*/10 * * * *', async () => {
     const tomorrow = new Date();
     tomorrow.setDate(date.getDate() + 1);
 
-    const { data } = await axios.get(`http://localhost:3001/api/email-list?date=${tomorrow.toLocaleDateString()}`);
+    const { data } = await axios.get(`${process.env.REACT_APP_SERVER}/api/email-list?date=${tomorrow.toLocaleDateString()}`);
 
     data.forEach((appointment) => {
         const hours = date.getHours();

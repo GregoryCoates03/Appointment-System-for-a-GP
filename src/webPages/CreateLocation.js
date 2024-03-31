@@ -19,7 +19,7 @@ const CreateLocation = (props) => {
         const { location_name } = state;
         const error = document.getElementById('error');
 
-        axios.post(`http://localhost:3001/api/locations`, {location_name}).then((response) => {
+        axios.post(`${process.env.REACT_APP_SERVER}/api/locations`, {location_name}).then((response) => {
             console.log(response.status);
             if (response.status === 200){
                 error.textContent = "Location created";

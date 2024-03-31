@@ -21,7 +21,7 @@ const CreateAccount = (props) => {
 
     const getLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations`);
             setLocations(response.data);
         } catch (error) {
             console.log(error);

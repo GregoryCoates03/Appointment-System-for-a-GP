@@ -8,7 +8,7 @@ const Appointments = (props) => {
     const { user, signedIn } = props;
     const navigate = useNavigate();
     const loc = useLocation();
-    //console.log(user);
+    console.log(user);
 
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(user.location_id);
@@ -17,7 +17,7 @@ const Appointments = (props) => {
     
     const getLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations`);
             setLocations(response.data);
             //console.log(response.data);
         } catch (error) {

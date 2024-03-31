@@ -28,7 +28,7 @@ const Information = (props) => {
 
     const getUser = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/signed-in`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/signed-in`);
             if (response.data.isAuthenticated) {
                 const { user_id, first_name, family_name, email, phone_number, address, location_id } = response.data.user;
                 setState({...state, user_id, first_name, family_name, email, phone_number, address, location_id });
@@ -40,7 +40,7 @@ const Information = (props) => {
 
     const getLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations`);
             setLocations(response.data);
         } catch (error) {
             console.log(error);

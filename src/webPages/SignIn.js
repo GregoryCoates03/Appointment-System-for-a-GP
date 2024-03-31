@@ -31,8 +31,8 @@ const SignIn = (props) => {
             } else {
                 setSignedIn(true);
                 getUser().then((response) => {
-                    //console.log(response.user.admin);
-                    //console.log(response);
+                    console.log(response);
+                    console.log(response.user.admin);
                     if (response.isAuthenticated){
                         setUser({
                             first_name: response.user.first_name,

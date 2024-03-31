@@ -6,7 +6,7 @@ const DoctorHome = (props) => {
     const [appointments, setAppointments] = useState([]);
 
     const getUpcomingAppointments = async () => {
-        const response = await axios.get(`http://localhost:3001/api/get-appointments/${doctor}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/get-appointments/${doctor}`);
         setAppointments(response.data);
     }
 

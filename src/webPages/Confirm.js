@@ -17,7 +17,7 @@ const Confirm = () => {
 
     useEffect(() => {
         const checkSignedIn = async () => {
-            const response = await axios.get(`http://localhost:3001/api/signed-in`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/signed-in`);
             if (!response.data.isAuthenticated){
                 console.log(loc.pathname);
                 navigate('/sign-in/', { state: { prev: loc.pathname, query: '?cancellation=true' }});
@@ -27,8 +27,8 @@ const Confirm = () => {
 
         if (!loc.state || !selectedLocationName || !selectedDoctorName){
             const fetchNames = async () => {
-                const locationData = await axios.get(`http://localhost:3001/api/location/${location}`);
-                const doctorData = await axios.get(`http://localhost:3001/api/doctors/${doctor}`);  
+                const locationData = await axios.get(`${process.env.REACT_APP_SERVER}/api/location/${location}`);
+                const doctorData = await axios.get(`${process.env.REACT_APP_SERVER}/api/doctors/${doctor}`);  
                 setSelectedLocationName(locationData.data[0].location_name);
                 setSelectedDoctorName(doctorData.data[0].first_name + " " + doctorData.data[0].last_name);
             }
@@ -62,8 +62,8 @@ const Confirm = () => {
                 });
             }
             if (cancellation) {
-                axios.delete(`http://localhost:3001/api/check-waiting-list?doctor_id=${doctor}&location_id=${location}&date=${date}`);
-                axios.put(`http://localhost:3001/api/reset`);
+                axios.delete(`${process.env.REACT_APP_SERVER}/api/check-waiting-list?doctor_id=${doctor}&location_id=${location}&date=${date}`);
+                axios.put(`${process.env.REACT_APP_SERVER}/api/reset`);
             }
             console.log(response.data); 
         } catch (error) {

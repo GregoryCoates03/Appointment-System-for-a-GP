@@ -30,7 +30,7 @@ const CreateDoctor = (props) => {
 
     const getLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/locations`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/locations`);
             setLocations(response.data);
         } catch (error) {
             console.log(error);
@@ -65,9 +65,9 @@ const CreateDoctor = (props) => {
 
         const error = document.getElementById('error');
         
-        axios.post(`http://localhost:3001/api/doctors`, {first_name, last_name, location_id, start_time, end_time, break_time, monday, tuesday, wednesday, thursday, friday, saturday, sunday}).then((response) => {
+        axios.post(`${process.env.REACT_APP_SERVER}/api/doctors`, {first_name, last_name, location_id, start_time, end_time, break_time, monday, tuesday, wednesday, thursday, friday, saturday, sunday}).then((response) => {
             console.log(response.data);
-            axios.put(`http://localhost:3001/api/upgrade`, { doctor_id: response.data[0].doctor_id, email }).catch((error) => {
+            axios.put(`${process.env.REACT_APP_SERVER}/api/upgrade`, { doctor_id: response.data[0].doctor_id, email }).catch((error) => {
                 console.log(error);
             });
             error.textContent = "Doctor created";
