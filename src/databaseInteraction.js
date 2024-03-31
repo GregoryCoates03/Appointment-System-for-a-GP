@@ -33,6 +33,7 @@ const createAccount = (userDetails) => {
 }
 
 const signInUser = async (email, password) => {
+    console.log(process.env.REACT_APP_SERVER);
     console.log(`${process.env.REACT_APP_SERVER}/api/login/`)
     try {
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/login/`, { email, password });
