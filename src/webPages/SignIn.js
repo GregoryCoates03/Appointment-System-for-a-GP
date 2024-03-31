@@ -25,6 +25,7 @@ const SignIn = (props) => {
         const error = document.getElementById('error');
 
         signInUser(email, password).then((response) => {
+            console.log(response);
             if (!response){
                 error.textContent = "Error signing in, ensure your email and password are correct";
                 console.log("ERROR");
