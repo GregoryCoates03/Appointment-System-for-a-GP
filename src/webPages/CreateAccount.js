@@ -67,6 +67,7 @@ const CreateAccount = (props) => {
             createAccount({ first_name, family_name, email, phone_number, address, password, location_id }).then((response) => {
                 if (response === true){
                     error.textContent = "Email already exists";
+                    error.className = "text-red-500";
                 } else {
                     error.textContent = "Account created";
                     error.className = "text-green-500";

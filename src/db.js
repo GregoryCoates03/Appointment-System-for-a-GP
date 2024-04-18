@@ -4,14 +4,15 @@ const { Pool } = require('pg');
 require('dotenv').config({ path: './src/secret.env'});
 const fs = require('fs');
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
+//console.log(process.env)
+//process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
 
 const pool = new Pool({
-    connectionString: process.env.DB_CONNECTION,
-    ssl: {
-        rejectUnauthorized: false,
-        ca: fs.readFileSync(process.env.CA_CERT)
-    }
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
 });
 
 module.exports = pool;

@@ -15,14 +15,12 @@ const createAccount = (userDetails) => {
     var emailExists = false;
     return axios.post(`${process.env.REACT_APP_SERVER}/api/exists/`, { email: userDetails.email }).then((response) => {
         //console.log(response.data);
-        if(response.data === "Email already exists"){
-            emailExists = true;
-            return emailExists;
+        if(response.data.exists){
+            return true;
         }    
         if (!emailExists){
             axios.post(`${process.env.REACT_APP_SERVER}/api/users/`, userDetails).then((response) => {
-                console.log(response.data);
-                return emailExists;
+                return false;
             }).catch((error) => {
                 console.log(error);
             });
@@ -37,8 +35,7 @@ const signInUser = async (email, password) => {
     console.log(`${process.env.REACT_APP_SERVER}/api/login/`)
     try {
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/login/`, { email, password });
-        return true;
-        /*if(response.status === 200){
+        if(response.status === 200){
             const authenticated = await isAuthenticated();
             if (authenticated){
                 console.log(response.data.user);
@@ -48,7 +45,7 @@ const signInUser = async (email, password) => {
             }
         } else {
             return false;
-        }*/
+        }
     } catch (error) {
         console.log(error);
         return false;

@@ -51,11 +51,11 @@ authUser = async (email, password, done) => {
     try {
         const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email]);
         const user = result.rows[0]
-        console.log(result.rows[0]);
+        //console.log(result.rows[0]);
 
         bcrypt.compare(password, user.password, (err, compare) => {
             if(compare){
-                console.log(user);
+                //console.log(user);
                 return done(null, user);
             } else {
                 return done(null, false, { message: "Invalid credentials" });
@@ -70,24 +70,24 @@ authUser = async (email, password, done) => {
 passport.use(new localStrategy ({ usernameField: "email", passwordField: "password" }, authUser));
 
 passport.serializeUser((userObj, done) => {
-    console.log("SERIALISE")
-    console.log(userObj.user_id);
+    //console.log("SERIALISE")
+    //console.log(userObj.user_id);
     done(null, userObj.user_id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log("DESERIALISE");
+    //console.log("DESERIALISE");
     try {
         const result = await db.query(`SELECT * FROM users WHERE user_id = $1;`, [id]);
         const user = result.rows[0];
-        console.log(user);
+        //console.log(user);
         done(null, user);
     } catch (err) {
         console.log(err);
         return done(err);
     }
-    console.log(user);
-    done(null, user);
+    //console.log(user);
+    //done(null, user);
 })
 
 const port = 3001;
@@ -121,7 +121,7 @@ printData = (req, res, next) => {
     next()
 }
 
-app.use(printData) //user printData function as middleware to print populated variables
+//app.use(printData) //user printData function as middleware to print populated variables
 routes(app, db);
 
 task.start();

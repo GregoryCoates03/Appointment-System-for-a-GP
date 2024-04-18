@@ -4,7 +4,7 @@ import { updateAccount } from "../databaseInteraction";
 import axios from "axios";
 
 const Information = (props) => {
-    const { signedIn } = props;
+    const { signedIn, setUser } = props;
     const navigate = useNavigate()
     const loc = useLocation();
 
@@ -24,7 +24,7 @@ const Information = (props) => {
     });
 
     const [locations, setLocations] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(0);
+    const [selectedLocation, setSelectedLocation] = useState(state.location_id);
 
     const getUser = async () => {
         try {
@@ -114,6 +114,9 @@ const Information = (props) => {
                 } else {
                     error.textContent = "Account updated";
                     error.className = "text-green-500";
+                    setUser({
+                        location_id: response.user.location_id
+                    })
                 }
             }).catch((error) => {
                 console.log(error);
@@ -147,7 +150,7 @@ const Information = (props) => {
                     <label htmlFor="confirm_password">Confirm New Password:</label>
                     <input id="confirm_password" name="confirm_password" type="password" className="bg-gray-400" value={state.confirm_password} onChange={handleChange}/>
                     <label htmlFor="location_id">Preferred Doctors:</label>
-                    <select className="bg-gray-400" value={selectedLocation} onChange={handleLocationChange}>
+                    <select className="bg-gray-400" value={state.location_id} onChange={handleLocationChange}>
                         {locations.map((location) => (
                             <option key={location.location_id} value={location.location_id}>
                                 {location.location_name}

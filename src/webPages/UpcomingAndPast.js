@@ -24,18 +24,31 @@ const UpcomingAndPast = () => {
     const handleClick = async (appointment_id, location_id, doctor_id, date, time) => {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/appointments/${appointment_id}`);
-            //console.log(response.data);
-            const waiting_list = new waitingList(location_id, doctor_id, date);
+
+            date = new Date(date);
+
+            console.log(date.getDate())
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            const newDate = (`${year}-${month}-${day}`);
+
+            console.log(newDate)
+
+            const waiting_list = new waitingList(location_id, doctor_id, newDate);
+
             waiting_list.waitingListSort().then(async (sorted) => {
+                console.log(sorted)
                 if (sorted.length > 0){
-                    //console.log(sorted);
+                    console.log(sorted);
                     const top_user = sorted[0].user_id;
-                    //console.log(top_user)
+                    console.log(top_user);
                     const response1 = await axios.get(`${process.env.REACT_APP_SERVER}/api/users/${top_user}`);
-                    //console.log(response1.data[0]);
+                    console.log(response1.data[0]);
                     const { email } = response1.data[0];
-                    const response2 = await axios.post(`${process.env.REACT_APP_SERVER}/api/available-appointment`, { email, location_id, doctor_id, date, time });
-                    //console.log(response2);
+                    const response2 = await axios.post(`${process.env.REACT_APP_SERVER}/api/available-appointment`, { email, location_id, doctor_id, date: newDate, time });
+                    console.log(response2);
                 }
             });
             //console.log(sorted_list);

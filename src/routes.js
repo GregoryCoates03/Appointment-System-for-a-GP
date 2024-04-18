@@ -421,6 +421,16 @@ module.exports = (app, db) => {
         }
     });
 
+    app.route('/api/get-waiting-list')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT w.waiting_list_id, w.user_id, u.waiting_list_points FROM waiting_list AS w JOIN users AS u ON w.user_id=u.user_id WHERE w.date=$1 AND w.doctor_id=$2 AND w.location_id=$3;', [req.query.date, req.query.doctor_id, req.query.location_id]);
+            res.json(result.rows);
+        } catch (err) {
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
     app.route('/api/check-waiting-list')
     .get(async (req, res) => {
         try {
@@ -436,6 +446,16 @@ module.exports = (app, db) => {
             res.json({
                 message: "Removed User From Waiting List"
             });
+        } catch (err) {
+            res.status(500).send('Internal Server Error');
+        }
+    })
+
+    app.route('/api/check-user-on-waiting-list')
+    .get(async (req, res) => {
+        try {
+            const result = await db.query('SELECT w.waiting_list_id, w.user_id, u.waiting_list_points FROM waiting_list AS w JOIN users AS u ON w.user_id=u.user_id WHERE w.date=$1 AND w.doctor_id=$2 AND w.location_id=$3 AND w.user_id=$4;', [req.query.date, req.query.doctor_id, req.query.location_id, req.user.user_id]);
+            res.json(result.rows);
         } catch (err) {
             res.status(500).send('Internal Server Error');
         }

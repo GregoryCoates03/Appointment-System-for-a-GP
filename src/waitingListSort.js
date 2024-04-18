@@ -1,5 +1,4 @@
 import axios from "axios";
-//const sendEmail = require("sendEmail");
 
 export default class waitingList {
     constructor(location_id, doctor_id, date) {
@@ -9,24 +8,32 @@ export default class waitingList {
         this.location_id = location_id;
     }
 
+    // Fetches the waiting list from the database
     setWaitingList = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/check-waiting-list?date=${this.date}&doctor_id=${this.doctor_id}&location_id=${this.location_id}`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/get-waiting-list?date=${this.date}&doctor_id=${this.doctor_id}&location_id=${this.location_id}`);
+        console.log(response);
         this.waitingList = response.data;
     }
 
+    // Sorts the waiting list
     waitingListSort = async () => {
         await this.setWaitingList();
+
+        // Creates a new array of patients whose at_risk attribute is set to true
         const atRisk = this.waitingList.filter((item) => {
             return item.at_risk;
         });
     
+        // Creates a new array of patients whose at_risk attribute is set to false
         const notAtRisk = this.waitingList.filter((item) => {
             return !item.at_risk;
         });
     
+        // Returns the sorted waiting list with at risk patients in order of descending points and followed by the not at risk patients in order of descending points 
         return [...this.sortFunction(atRisk), ...this.sortFunction(notAtRisk)];
     }
     
+    // Sorts an array based on the waiting_list_position value with patients with the most points being first
     sortFunction = (list) => {
         return list.sort((a,b) => {
             if (a.waiting_list_position === b.waiting_list_position){

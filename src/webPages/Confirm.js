@@ -1,6 +1,7 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import waitingList from "../waitingListSort";
 
 const Confirm = () => {
     const { location, doctor, date, time } = useParams();
@@ -15,6 +16,10 @@ const Confirm = () => {
     const [selectedLocationName, setSelectedLocationName] = useState("");
     const [selectedDoctorName, setSelectedDoctorName] = useState("");
 
+    const [userId, setUserId] = useState("");
+
+    const [exists, setExists] = useState(false);
+
     useEffect(() => {
         const checkSignedIn = async () => {
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/signed-in`);
@@ -22,6 +27,7 @@ const Confirm = () => {
                 console.log(loc.pathname);
                 navigate('/sign-in/', { state: { prev: loc.pathname, query: '?cancellation=true' }});
             }
+            setUserId(response.data.user.user_id);
         }
         checkSignedIn();
 
@@ -37,14 +43,31 @@ const Confirm = () => {
             setSelectedLocationName(loc.state.selectedLocationName);
             setSelectedDoctorName(loc.state.selectedDoctorName);
         }
+        checkAvailable();
     }, [])
+
+    const checkAvailable = async () => {
+        try {
+            const [day, month, year] = date.split("/");
+            const ISODate = new Date(`${year}-${month}-${day}`).toISOString();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/booked-appointments/${location}/${doctor}/${ISODate}`);
+
+            if (response.data.some((appointment) => appointment.time === time)){
+                setExists(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const handleClick = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/api/appointments/', {
+            const [day, month, year] = date.split("/");
+            const ISODate = new Date(`${year}-${month}-${day}`).toISOString();
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/appointments/`, {
                 appointment_type: "Test",
                 doctor_id: doctor,
-                date: date,
+                date: ISODate,
                 time: time,
                 location_id: location
             })
@@ -53,7 +76,7 @@ const Confirm = () => {
                 button.className = "bg-blue-500 my-1 border-2 border-black text-black";
                 button.disabled = true;
                 button.textContent = "Appointment Booked"
-                axios.post('http://localhost:3001/api/confirmation/', {
+                axios.post(`${process.env.REACT_APP_SERVER}/api/confirmation/`, {
                     text: `Appointment with ${selectedDoctorName} in ${selectedLocationName} at ${time} is booked.`,
                     doctor: selectedDoctorName,
                     location: selectedLocationName,
@@ -71,13 +94,35 @@ const Confirm = () => {
         }
     }
 
+    const declineAppointment = async () => {
+        const waiting_list = new waitingList(location, doctor, date);
+        waiting_list.waitingListSort().then(async (sorted) => {
+            if (sorted.length > 0){
+                console.log(sorted);
+                const next_user = sorted.findIndex((user) => user.user_id === userId);
+                console.log(next_user)
+                if (next_user != -1){
+                    const next_user_id = sorted[next_user].user_id;
+                    //const top_user = sorted[0].user_id;
+                    //console.log(top_user)
+                    const response1 = await axios.get(`${process.env.REACT_APP_SERVER}/api/users/${next_user_id}`);
+                    console.log(response1.data[0]);
+                    const { email } = response1.data[0];
+                    const response2 = await axios.post(`${process.env.REACT_APP_SERVER}/api/available-appointment`, { email, location, doctor, date, time });
+                    console.log(response2);
+                }
+            }
+        });
+    }
+
     return (
         <div className="flex items-center flex-col my-1">
             <h1 className="underline">{"Location: " + selectedLocationName}</h1>
             <h1 className="underline">{"Doctor: " + selectedDoctorName}</h1>
             <h1 className="underline">{"Date: " + date}</h1>
             <h1 className="underline">{"Time: " + time.split(":").slice(0, 2).join(":")}</h1>
-            <button id="button" className="bg-lime-500 my-1 border-2 border-black text-black" onClick={handleClick}>Confirm Appointment</button>
+            <button id="button" className={`${exists ? 'bg-red-500' : 'bg-lime-500'} my-1 border-2 border-black text-black`} onClick={handleClick} disabled={exists}>{exists ? 'Appointment Unavailable' : 'Confirm Appointment' }</button>
+            { cancellation && !exists ? <button id="button" className="bg-lime-500 my-1 border-2 border-black text-black" onClick={declineAppointment}>Decline Appointment</button> : ''}
         </div>
     )
 }

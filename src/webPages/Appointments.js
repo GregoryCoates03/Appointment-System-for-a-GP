@@ -73,7 +73,7 @@ const Appointments = (props) => {
                     ))}
                 </select>
                 {/*https://ui.dev/react-router-pass-props-to-link*/}
-                <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white my-1 border-2 border-black">Select Doctor </Link>
+                <Link to={`/appointments/${selectedLocation}`} state={{ selectedLocationName: selectedLocationName }} className="bg-sky-600 text-white my-1 border-2 border-black">Select Doctor</Link>
             </div>
         )
     }

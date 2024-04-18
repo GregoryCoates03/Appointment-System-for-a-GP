@@ -149,8 +149,8 @@ const UpdateDoctor = (props) => {
                     ))}
                 </select>
                 <div>
-                    { doctorDetails ?   <div>
-                                            <form className="flex flex-col" onSubmit={handleSubmit}>
+                    { doctorDetails ?   <div className="flex items-center flex-col">
+                                            <form className="flex items-center flex-col" onSubmit={handleSubmit}>
                                                 <label htmlFor="first_name">First Name:</label>
                                                 <input id="first_name" name="first_name" type="text" className="bg-gray-400" value={doctorDetails.first_name} onChange={handleChange}/>
                                                 <label htmlFor="last_name">Last Name:</label>

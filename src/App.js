@@ -47,7 +47,7 @@ const App = () => {
             <Route exact path="/appointments/:location/:doctor/" element={<Dates admin={admin} signedIn={signedIn}/>} />
             <Route exact path="/appointments/:location/:doctor/:date" element={<Time admin={admin} signedIn={signedIn}/>} />
             <Route exact path="/appointments/:location/:doctor/:date/:time" element={<Confirm admin={admin} signedIn={signedIn}/>} />
-            <Route exact path="/information/" element={<Information signedIn={signedIn} />} />
+            <Route exact path="/information/" element={<Information user={user} signedIn={signedIn} setUser={setUser} />} />
             <Route exact path="/sign-in/" element={<SignIn setAdmin={setAdmin} setSignedIn={setSignedIn} setUser={setUser} setDoctor={setDoctor} />} />
             <Route exact path="/create-account/" element={<CreateAccount />} />
             <Route exact path="/admin/" element={<Admin admin={admin} user={user} />} />

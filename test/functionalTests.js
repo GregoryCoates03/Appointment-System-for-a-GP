@@ -7,7 +7,7 @@ const server = require('../src/server.js');
 
 chai.use(chaiHttp);
 
-suite('Functional Tests', () => {
+suite('Unit Tests', () => {
     let location;
     suite('Location Tests', () => {
         test('Create Location', async () => {
@@ -279,7 +279,7 @@ suite('Functional Tests', () => {
             assert.equal(doctor_id, doctor);
             assert.equal(time, "10:00:00");
             assert.equal(date, "2024-03-23T00:00:00.000Z");
-            console.log(body);
+            //console.log(body);
         });
 
         test('Update Appointment', async () => {
@@ -318,7 +318,7 @@ suite('Functional Tests', () => {
                 .keepOpen()
                 .get(`/api/booked-appointments/${location}/${doctor}/2024-03-24`)
             
-            console.log(body);
+            //console.log(body);
             assert.equal(body[0].time, "10:20:00");
         });
 
@@ -439,7 +439,7 @@ suite('Functional Tests', () => {
             const { body } = await agent
             .delete(`/api/check-waiting-list?location_id=${location}&doctor_id=${doctor}&date='2024-03-25`);
 
-            console.log(body);
+            //console.log(body);
             assert.equal(body.message, "Removed User From Waiting List");
         })
 
@@ -457,7 +457,7 @@ suite('Functional Tests', () => {
             const { body } = await agent
                 .get('/api/log-out');
     
-            console.log(body);
+            //console.log(body);
             assert.equal(body.message, "Logged out");
     
             const response = await chai
